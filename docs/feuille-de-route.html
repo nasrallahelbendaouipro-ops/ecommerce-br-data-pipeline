@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecommerce Order Dataset (BR) — Feuille de route du projet data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1420;
+    --panel:#111d2e;
+    --panel-2:#0e1826;
+    --line:#26394f;
+    --line-soft:#1b2a3d;
+    --text:#e8edf5;
+    --muted:#8ba0b8;
+    --brass:#dc9a4f;
+    --teal:#4fb3ab;
+    --rust:#c9704f;
+    --green:#7fbf8f;
+    --radius:10px;
+    --maxw:960px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif; line-height:1.6;
+    font-size:16px;
+  }
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.01em; margin:0;}
+  code, .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--teal);}
+
+  #progress-rail{
+    position:sticky; top:0; z-index:50; background:rgba(11,20,32,.92);
+    backdrop-filter:blur(6px); border-bottom:1px solid var(--line);
+  }
+  #progress-track{height:4px; background:var(--line-soft); position:relative; overflow:hidden;}
+  #progress-fill{height:100%; width:0%; background:linear-gradient(90deg, var(--brass), var(--teal)); transition:width .4s ease;}
+  #progress-label{
+    max-width:var(--maxw); margin:0 auto; padding:8px 6vw 8px;
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--muted);
+  }
+  #progress-label strong{color:var(--brass);}
+
+  header.hero{ max-width:var(--maxw); margin:0 auto; padding:64px 6vw 20px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono'; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--teal); margin-bottom:14px;
+  }
+  header.hero h1{font-size:clamp(1.9rem, 4.4vw, 2.9rem); color:var(--text); line-height:1.12;}
+  .hero-sub{color:var(--muted); font-size:1.02rem; max-width:66ch; margin:18px 0 0;}
+  .stack-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:24px;}
+  .tag{
+    font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--brass);
+    border:1px solid rgba(220,154,79,.4); background:rgba(220,154,79,.08);
+    padding:5px 11px; border-radius:999px;
+  }
+
+  .pipeline-wrap{max-width:var(--maxw); margin:36px auto 8px; padding:0 6vw;}
+  .pipeline{ display:flex; align-items:stretch; gap:0; overflow-x:auto; padding-bottom:6px; }
+  .pipe-node{
+    flex:0 0 auto; min-width:112px; background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:12px 14px; text-align:center; position:relative;
+  }
+  .pipe-node .pn-label{font-family:'IBM Plex Mono'; font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em;}
+  .pipe-node .pn-name{font-family:'Space Grotesk'; font-weight:600; font-size:.86rem; margin-top:4px; color:var(--text);}
+  .pipe-connector{
+    flex:1 1 28px; min-width:28px; position:relative; align-self:center; height:2px;
+    background:repeating-linear-gradient(90deg, var(--teal) 0 6px, transparent 6px 12px);
+    background-size:200% 100%; animation:flow 2.4s linear infinite;
+  }
+  @keyframes flow{ to{ background-position:-24px 0; } }
+  .pipe-node.mint{border-color:rgba(79,179,171,.5);}
+  .pipe-node.brass{border-color:rgba(220,154,79,.5);}
+  @media (prefers-reduced-motion: reduce){ .pipe-connector{animation:none;} }
+
+  .fork-note{
+    max-width:var(--maxw); margin:10px auto 0; padding:0 6vw;
+    font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--muted); text-align:center;
+  }
+
+  .rules{max-width:var(--maxw); margin:44px auto 0; padding:0 6vw;}
+  .rules h2{font-size:1.3rem;}
+  .rules p{color:var(--muted); margin:12px 0 0; max-width:70ch;}
+
+  .split-cards{ display:flex; gap:16px; margin-top:22px; flex-wrap:wrap; }
+  .split-card{
+    flex:1 1 260px; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .split-card .sc-tool{font-family:'IBM Plex Mono'; font-size:.7rem; text-transform:uppercase; letter-spacing:.08em;}
+  .split-card.pbi .sc-tool{color:var(--brass);}
+  .split-card.tab .sc-tool{color:var(--teal);}
+  .split-card h3{font-size:1.05rem; margin-top:6px;}
+  .split-card p{color:var(--muted); font-size:.86rem; margin:8px 0 0;}
+  .split-card .sc-cols{margin-top:10px; font-family:'IBM Plex Mono'; font-size:.72rem; color:var(--text); line-height:1.8;}
+
+  .layout{max-width:var(--maxw); margin:0 auto; padding:48px 6vw 90px; display:flex; gap:44px; align-items:flex-start;}
+  nav.toc{
+    flex:0 0 218px; position:sticky; top:64px; align-self:flex-start;
+    border-left:1px solid var(--line); padding-left:16px;
+  }
+  nav.toc a{
+    display:block; font-family:'IBM Plex Mono'; font-size:.74rem; color:var(--muted);
+    text-decoration:none; padding:6px 0; border-left:2px solid transparent; margin-left:-18px; padding-left:16px;
+    transition:color .15s, border-color .15s;
+  }
+  nav.toc a:hover, nav.toc a.active{color:var(--brass); border-left-color:var(--brass);}
+  nav.toc a.done::before{content:"✓ "; color:var(--green);}
+
+  main{flex:1 1 auto; min-width:0;}
+
+  section.phase{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:30px 32px; margin-bottom:26px; scroll-margin-top:76px;
+  }
+  .phase-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px;}
+  .phase-num{font-family:'IBM Plex Mono'; color:var(--brass); font-size:.9rem;}
+  section.phase h2{font-size:1.3rem;}
+  .phase-goal{color:var(--muted); margin:14px 0 22px; max-width:64ch;}
+
+  .block{margin:20px 0;}
+  .block-label{
+    font-family:'IBM Plex Mono'; font-size:.7rem; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--teal); margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .block-label.warn{color:var(--rust);}
+  .block-label.brass{color:var(--brass);}
+  ul.q-list{margin:0; padding-left:20px;}
+  ul.q-list li{margin-bottom:8px; color:var(--text);}
+  ul.pitfall-list{margin:0; padding-left:20px;}
+  ul.pitfall-list li{margin-bottom:8px; color:var(--muted);}
+
+  pre.snippet{
+    background:var(--panel-2); border:1px solid var(--line-soft); border-radius:8px;
+    padding:14px 16px; overflow-x:auto; font-size:.8rem; color:#c9d4e3; margin:0;
+  }
+
+  .doc-links{display:flex; flex-wrap:wrap; gap:10px;}
+  .doc-links a{
+    font-family:'IBM Plex Mono'; font-size:.74rem; color:var(--teal); text-decoration:none;
+    border:1px solid var(--line-soft); padding:5px 11px; border-radius:6px;
+  }
+  .doc-links a:hover{border-color:var(--teal);}
+  .doc-note{color:var(--muted); font-size:.84rem; margin:0; max-width:64ch;}
+
+  .decide-box{
+    border:1px dashed rgba(220,154,79,.5); background:rgba(220,154,79,.05);
+    border-radius:8px; padding:14px 16px; margin-top:6px;
+  }
+  .decide-box .block-label{margin-bottom:6px;}
+
+  .done-check{
+    margin-top:24px; padding-top:18px; border-top:1px solid var(--line-soft);
+    display:flex; align-items:flex-start; gap:10px; cursor:pointer; user-select:none;
+  }
+  .done-check input{
+    appearance:none; width:19px; height:19px; border:1.5px solid var(--muted); border-radius:5px;
+    margin-top:2px; flex:0 0 auto; cursor:pointer; position:relative; background:var(--panel-2);
+  }
+  .done-check input:checked{background:var(--green); border-color:var(--green);}
+  .done-check input:checked::after{
+    content:""; position:absolute; left:5px; top:1px; width:5px; height:10px;
+    border:solid var(--panel); border-width:0 2px 2px 0; transform:rotate(45deg);
+  }
+  .done-check span{font-size:.9rem; color:var(--text);}
+  .done-check .crit-label{color:var(--muted); font-size:.82rem; display:block; margin-top:2px;}
+
+  section#couts{max-width:100%;}
+  table.cost{width:100%; border-collapse:collapse; margin:18px 0 26px; font-size:.86rem;}
+  table.cost caption{
+    text-align:left; font-family:'Space Grotesk'; font-weight:600; color:var(--text);
+    padding-bottom:10px; font-size:.98rem;
+  }
+  table.cost th{
+    text-align:left; font-family:'IBM Plex Mono'; font-size:.7rem; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--muted); padding:10px 14px; border-bottom:1px solid var(--line);
+  }
+  table.cost td{padding:12px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top; color:var(--text);}
+  table.cost tr:last-child td{border-bottom:none;}
+  .pill{
+    display:inline-block; font-family:'IBM Plex Mono'; font-size:.72rem;
+    padding:3px 9px; border-radius:999px; white-space:nowrap;
+  }
+  .pill.free{background:rgba(127,191,143,.12); color:var(--green); border:1px solid rgba(127,191,143,.35);}
+  .pill.warn{background:rgba(201,112,79,.12); color:var(--rust); border:1px solid rgba(201,112,79,.35);}
+  .pill.low{background:rgba(220,154,79,.12); color:var(--brass); border:1px solid rgba(220,154,79,.35);}
+
+  .callout{
+    background:var(--panel-2); border:1px solid var(--rust); border-radius:var(--radius);
+    padding:16px 20px; margin:16px 0 28px;
+  }
+  .callout strong{color:var(--rust);}
+
+  .total-box{
+    background:var(--panel); border:1px solid var(--teal); border-radius:var(--radius);
+    padding:20px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  }
+  .total-box .amount{font-family:'Space Grotesk'; font-size:1.9rem; color:var(--teal); font-weight:700;}
+  .total-box .label{color:var(--muted); font-size:.85rem; max-width:52ch;}
+
+  footer{max-width:var(--maxw); margin:0 auto; padding:0 6vw 70px; color:var(--muted); font-size:.82rem; border-top:1px solid var(--line); padding-top:24px;}
+
+  @media (max-width: 880px){
+    nav.toc{display:none;}
+    .layout{padding:40px 6vw 90px; flex-direction:column;}
+    .split-cards{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-rail">
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <div id="progress-label"><span>Progression du projet</span><span><strong id="progress-count">0</strong>/11 étapes validées</span></div>
+</div>
+
+<header class="hero">
+  <div class="eyebrow">Projet personnel · Data Engineering · Ecommerce Order Dataset (BR)</div>
+  <h1>Feuille de route — bâtir le pipeline pièce par pièce</h1>
+  <p class="hero-sub">GCP, dbt, Airflow, Power BI et Tableau assemblés autour d'un dataset e-commerce brésilien fourni en <strong style="color:var(--text)">5 tables relationnelles</strong> (Orders, OrderItems, Customers, Products, Payments), avec un split <strong style="color:var(--text)">train / test</strong> détourné en flux d'ingestion réaliste : le train sert de chargement historique, le test simule des commandes en cours, sans issue connue. Ce document n'est pas un tutoriel clé-en-main : à chaque phase, tu trouves un objectif, des questions à investiguer toi-même, les pièges connus et la documentation à consulter — mais aucune solution toute faite. C'est toi qui construis.</p>
+  <div class="stack-tags">
+    <span class="tag">Cloud Storage</span>
+    <span class="tag">BigQuery</span>
+    <span class="tag">Cloud Composer / Airflow</span>
+    <span class="tag">dbt Core</span>
+    <span class="tag">Power BI</span>
+    <span class="tag">Tableau</span>
+  </div>
+</header>
+
+<div class="pipeline-wrap">
+  <div class="pipeline">
+    <div class="pipe-node brass"><div class="pn-label">Sources</div><div class="pn-name">5 tables · train+test</div></div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node"><div class="pn-label">Ingestion</div><div class="pn-name">GCS</div></div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node"><div class="pn-label">Entrepôt</div><div class="pn-name">BigQuery</div></div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node mint"><div class="pn-label">Transform</div><div class="pn-name">dbt</div></div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node"><div class="pn-label">Orchestration</div><div class="pn-name">Airflow</div></div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node brass"><div class="pn-label">Restitution</div><div class="pn-name">Power BI</div></div>
+    <div class="pipe-connector"></div>
+    <div class="pipe-node brass"><div class="pn-label">Restitution</div><div class="pn-name">Tableau</div></div>
+  </div>
+</div>
+<p class="fork-note">5 tables relationnelles, deux flux d'ingestion (backfill + incrémental simulé), deux marts métier — pas de fusion artificielle entre sources</p>
+
+<div class="rules">
+  <h2>Le concept du projet</h2>
+  <p>Contrairement à DataCo (un seul CSV plat, 53 colonnes), ce dataset arrive déjà <strong style="color:var(--text)">normalisé en 5 tables reliées entre elles</strong> par <code>order_id</code>, <code>customer_id</code> et <code>product_id</code> — le travail de modélisation dbt se déplace donc du découpage d'une table large vers de vraies jointures relationnelles. Deuxième différence structurante : le dataset est livré avec un split <strong style="color:var(--text)">train (89 316 commandes) / test (38 280 commandes)</strong> pensé à l'origine pour une compétition de machine learning. Le test ne contient <em>pas</em> <code>order_status</code>, ni la date de livraison réelle, ni la date de livraison estimée — exactement les colonnes qu'on ne connaît jamais tant qu'une commande n'est pas résolue. Plutôt que d'ignorer le test, ce projet le détourne en <strong style="color:var(--text)">flux entrant simulé</strong> : le train est chargé une fois comme historique, le test est injecté progressivement pour donner un vrai sens à l'orchestration planifiée en phase 07, au lieu d'un DAG qui ne ferait que rejouer indéfiniment les mêmes données.</p>
+
+  <div class="split-cards">
+    <div class="split-card pbi">
+      <div class="sc-tool">Power BI</div>
+      <h3>Logistique &amp; Livraison</h3>
+      <p>Performance de livraison, y compris le suivi des commandes en cours issues du flux incrémental.</p>
+      <div class="sc-cols">order_status · dates commande/livraison · customer_state/city · seller_id · shipping_charges</div>
+    </div>
+    <div class="split-card tab">
+      <div class="sc-tool">Tableau</div>
+      <h3>Ventes &amp; Produits</h3>
+      <p>Performance commerciale, produit et paiement.</p>
+      <div class="sc-cols">product_category_name · price · payment_type · payment_installments · payment_value</div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:28px;">Comment utiliser cette feuille de route</h2>
+  <p>Onze phases, dans l'ordre. Chacune te donne de quoi avancer seul : un objectif clair, des questions à trancher toi-même, des pièges déjà identifiés, et la doc officielle pertinente quand elle existe. Certaines décisions structurantes ont déjà été prises en amont (encadré "Déjà tranché dans ce projet") — le reste est à toi. Coche la case en bas de chaque phase seulement quand le critère de validation est réellement atteint — pas juste "exécuté", mais compris.</p>
+</div>
+
+<div class="layout">
+  <nav class="toc" id="toc">
+    <a href="#p0" data-idx="0">00 · Cadrage &amp; datasets</a>
+    <a href="#p1" data-idx="1">01 · Socle GCP</a>
+    <a href="#p2" data-idx="2">02 · Ingestion initiale</a>
+    <a href="#p3" data-idx="3">03 · Ingestion incrémentale</a>
+    <a href="#p4" data-idx="4">04 · dbt · staging</a>
+    <a href="#p5" data-idx="5">05 · dbt · marts</a>
+    <a href="#p6" data-idx="6">06 · Tests &amp; qualité</a>
+    <a href="#p7" data-idx="7">07 · Orchestration Airflow</a>
+    <a href="#p8" data-idx="8">08 · Dashboard Power BI</a>
+    <a href="#p9" data-idx="9">09 · Dashboard Tableau</a>
+    <a href="#p10" data-idx="10">10 · Documentation</a>
+    <a href="#couts" style="border-top:1px solid var(--line); margin-top:10px; padding-top:14px;">$ Coût des outils</a>
+  </nav>
+
+  <main>
+
+    <section class="phase" id="p0">
+      <div class="phase-head"><span class="phase-num">00</span><h2>Cadrage &amp; récupération des datasets</h2></div>
+      <p class="phase-goal">Objectif : comprendre exactement les 5 tables et ce qui distingue le train du test, avant d'écrire la moindre ligne de pipeline.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Vérifie toi-même les colonnes exactes des 5 tables (<code>Orders</code>, <code>OrderItems</code>, <code>Customers</code>, <code>Products</code>, <code>Payments</code>) et leurs clés de jointure — ne te fie pas à un schéma supposé.</li>
+          <li>Le test ne contient que 4 colonnes sur <code>Orders</code> (<code>order_id</code>, <code>customer_id</code>, <code>order_purchase_timestamp</code>, <code>order_approved_at</code>), contre 7 dans le train. Identifie précisément les 3 colonnes manquantes — que représentent-elles toutes les trois métier parlant ?</li>
+          <li><code>product_category_name</code> contient environ 0,3 % de valeurs vides dans <code>Products</code> — comment comptes-tu les traiter (catégorie "inconnue", exclusion de la ligne) ?</li>
+          <li>Vérifie toi-même : une commande dans <code>OrderItems</code> correspond-elle toujours à une seule ligne, ou certaines commandes ont-elles plusieurs articles ? Ça conditionne directement ton schéma en étoile.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>L'archive fournie ne contient aucun README — retrouve la source/licence d'origine avant toute publication en portfolio public, même si le contenu ressemble à un jeu de données e-commerce brésilien classique.</li>
+          <li><code>order_id</code>, <code>customer_id</code> et <code>product_id</code> sont des identifiants alphanumériques aléatoires, pas des entiers séquentiels — assure-toi que tes jointures et tes types de colonnes les traitent bien comme des chaînes de caractères.</li>
+          <li>Ne suppose pas que le test set peut servir à calculer des KPI historiques — il lui manque structurellement les colonnes nécessaires (voir plus haut). Sa vocation est différente (phase 03).</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <p class="doc-note">Pas de page source officielle confirmée pour ce dataset précis (archive fournie sans README) — à toi de retracer son origine si tu veux la citer dans ton portfolio.</p>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="0"><span>Étape validée<span class="crit-label">Critère : tu peux citer de mémoire les colonnes clés des 5 tables, et expliquer précisément pourquoi le test en a moins que le train.</span></span></label>
+    </section>
+
+    <section class="phase" id="p1">
+      <div class="phase-head"><span class="phase-num">01</span><h2>Socle GCP</h2></div>
+      <p class="phase-goal">Objectif : un projet GCP fonctionnel, avec les bons services activés et une notion claire de ce qui coûte de l'argent.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Quels services précis dois-tu activer (Cloud Storage, BigQuery, éventuellement Composer/Cloud Run/Cloud Scheduler) et quels rôles IAM minimaux te faut-il pour chacun ?</li>
+          <li>Le niveau gratuit ("Always Free") de BigQuery et Cloud Storage couvre-t-il largement 5 fichiers totalisant ~127 000 lignes ? Fais le calcul toi-même.</li>
+          <li>Comment vas-tu éviter une facture surprise (budgets, alertes de facturation) ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Cloud Composer (Airflow managé) n'est <strong>pas</strong> dans le niveau gratuit — un environnement tourne en continu et facture même sans exécution de DAG. Vérifie ce point avant de choisir ton mode d'orchestration en phase 07.</li>
+          <li>La région choisie pour BigQuery et GCS doit être identique pour éviter des frais de sortie de données inter-régions.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://cloud.google.com/free" target="_blank">GCP Free Tier</a>
+          <a href="https://cloud.google.com/storage/docs" target="_blank">Cloud Storage docs</a>
+          <a href="https://cloud.google.com/bigquery/docs" target="_blank">BigQuery docs</a>
+          <a href="https://cloud.google.com/billing/docs/how-to/budgets" target="_blank">Alertes de budget</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="1"><span>Étape validée<span class="crit-label">Critère : projet GCP créé, bucket GCS et dataset BigQuery vides mais existants, une alerte de budget configurée.</span></span></label>
+    </section>
+
+    <section class="phase" id="p2">
+      <div class="phase-head"><span class="phase-num">02</span><h2>Ingestion initiale — chargement historique (train)</h2></div>
+      <p class="phase-goal">Objectif : les 5 fichiers du train atterrissent dans GCS, puis sont chargés tels quels dans un dataset BigQuery <code>raw</code>, comme un backfill unique.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Quelle arborescence de dossiers dans le bucket GCS va te permettre de distinguer clairement les 5 tables <strong>et</strong>, plus tard, le futur flux incrémental de la phase 03 (ex. séparer <code>raw/backfill/</code> de <code>raw/incremental/</code>) ?</li>
+          <li>Charges-tu les 5 CSV manuellement (<code>bq load</code> / console) pour ce premier passage, ou automatises-tu déjà via une fonction Cloud Run ? Les deux sont valables à ce stade — mais laquelle sert vraiment ton apprentissage maintenant ?</li>
+          <li>Comment nommes-tu les 5 tables <code>raw</code> de façon cohérente (<code>raw_orders</code>, <code>raw_order_items</code>, <code>raw_customers</code>, <code>raw_products</code>, <code>raw_payments</code>) ?</li>
+          <li>Comment gères-tu les types de colonnes mal inférés automatiquement par BigQuery (dates, nombres avec virgules) ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Le chargement automatique de schéma BigQuery se trompe souvent sur les colonnes numériques contenant des valeurs vides — elles finissent en <code>STRING</code> au lieu de <code>FLOAT</code>.</li>
+          <li>Ne charge que le train ici — le test est traité séparément en phase 03. Ne mélange pas les deux flux dans les mêmes tables <code>raw</code> dès le départ, même s'ils partagent le même schéma de colonnes.</li>
+          <li>Ne transforme rien à ce stade, même une "petite correction" — la couche <code>raw</code> doit rester un miroir fidèle des fichiers source.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv" target="_blank">Charger un CSV depuis GCS vers BigQuery</a>
+          <a href="https://cloud.google.com/functions/docs" target="_blank">Cloud Run functions</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="2"><span>Étape validée<span class="crit-label">Critère : les 5 tables <code>raw_*</code> existent dans BigQuery avec exactement 89 316 lignes chacune, et tu peux justifier chaque type de colonne choisi.</span></span></label>
+    </section>
+
+    <section class="phase" id="p3">
+      <div class="phase-head"><span class="phase-num">03</span><h2>Ingestion incrémentale — flux entrant simulé (test)</h2></div>
+      <p class="phase-goal">Objectif : injecter les 38 280 lignes du test non pas comme un bloc, mais comme un flux de commandes en cours de traitement, pour donner un cas d'usage réel à l'orchestration planifiée de la phase 07.</p>
+
+      <div class="decide-box">
+        <div class="block-label brass">Déjà tranché dans ce projet</div>
+        <p style="margin:0; color:var(--text); font-size:.9rem;">Le test set est traité comme des commandes réellement en cours, sans issue connue — pas comme des données à compléter, deviner ou halluciner. Ces lignes n'ont ni <code>order_status</code>, ni date de livraison réelle, ni date de livraison estimée, et doivent le rester jusqu'au bout du pipeline. Elles alimentent une table <code>raw</code> distincte du backfill (phase 02).</p>
+      </div>
+
+      <div class="block" style="margin-top:20px;">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Comment découpes-tu les 38 280 lignes en batches pour simuler un flux dans le temps — le test contient bien <code>order_purchase_timestamp</code> et <code>order_approved_at</code>, donc un rejeu chronologique réaliste est possible. C'est une option parmi d'autres : laquelle choisis-tu, et pourquoi ?</li>
+          <li>Le schéma de ta table <code>raw_orders_incremental</code> doit-il être strictement identique à <code>raw_orders</code> (avec des colonnes <code>NULL</code> pour ce qui manque), ou une table à part avec un schéma réduit ? Quel est l'impact sur le staging de la phase 04 ?</li>
+          <li>Comment rejoues-tu ce flux de façon déterministe et reproductible si tu dois retester ton pipeline plusieurs fois, sans dupliquer des lignes déjà chargées ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Ne triche pas en inventant un statut ou une date de livraison pour ces lignes — l'intérêt pédagogique de cette étape est justement de traiter une donnée réellement incomplète, comme dans un vrai flux de production.</li>
+          <li>Si le flux est déclenché automatiquement par batches, assure-toi que chaque batch n'est chargé qu'une seule fois (idempotence) — un déclenchement en double dupliquerait des commandes dans <code>raw</code>.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://cloud.google.com/bigquery/docs/batch-loading-data" target="_blank">BigQuery — chargement par batch</a>
+          <a href="https://cloud.google.com/scheduler/docs" target="_blank">Cloud Scheduler docs</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="3"><span>Étape validée<span class="crit-label">Critère : tu peux démontrer au moins deux exécutions successives de ton flux incrémental sans doublon ni perte de lignes, et expliquer pourquoi ces commandes n'ont pas de statut final.</span></span></label>
+    </section>
+
+    <section class="phase" id="p4">
+      <div class="phase-head"><span class="phase-num">04</span><h2>dbt — couche staging</h2></div>
+      <p class="phase-goal">Objectif : un modèle <code>stg_*</code> par table source (5 au total), qui nettoie sans encore fusionner ni interpréter métier.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Les colonnes sont déjà en <code>snake_case</code> ici, contrairement à DataCo — qu'est-ce qu'il reste quand même à standardiser (types, cast des dates, unités) ?</li>
+          <li><code>stg_orders</code> doit-il unifier backfill et flux incrémental dans un même modèle (avec une colonne indiquant la provenance), ou rester deux <code>source()</code> déclarées séparément dans <code>sources.yml</code> et fusionnées seulement plus tard ?</li>
+          <li>Comment traites-tu les <code>product_category_name</code> vides identifiés en phase 00 dès ce niveau ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Déclare bien le backfill et l'incrémental comme deux sources distinctes dans <code>sources.yml</code> si tu choisis de les garder séparées — sinon un renommage de table casse tout silencieusement.</li>
+          <li>Le staging ne doit contenir aucune jointure entre les 5 tables — c'est le rôle de la couche marts.</li>
+        </ul>
+      </div>
+
+      <pre class="snippet">models/
+├── staging/
+│   ├── _sources.yml
+│   ├── stg_orders.sql
+│   ├── stg_order_items.sql
+│   ├── stg_customers.sql
+│   ├── stg_products.sql
+│   └── stg_payments.sql</pre>
+
+      <div class="block" style="margin-top:18px;">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://docs.getdbt.com/docs/build/sources" target="_blank">dbt — Sources</a>
+          <a href="https://docs.getdbt.com/best-practices/how-we-structure/2-staging" target="_blank">dbt — Structurer le staging</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="4"><span>Étape validée<span class="crit-label">Critère : <code>dbt run</code> passe sans erreur sur les 5 modèles staging, et <code>dbt docs generate</code> affiche des colonnes nommées de façon cohérente entre les cinq.</span></span></label>
+    </section>
+
+    <section class="phase" id="p5">
+      <div class="phase-head"><span class="phase-num">05</span><h2>dbt — marts</h2></div>
+      <p class="phase-goal">Objectif : assembler les 5 modèles staging en deux marts métier indépendants, organisés en étoile (star schema), autour de dimensions partagées.</p>
+
+      <div class="decide-box">
+        <div class="block-label brass">Déjà tranché dans ce projet</div>
+        <p style="margin:0; color:var(--text); font-size:.9rem;"><code>seller_id</code> est rattaché au mart logistique (performance de livraison par vendeur), pas traité comme une dimension à part. Les données de paiement (<code>payment_type</code>, <code>payment_installments</code>, <code>payment_value</code>) sont un axe du mart ventes, pas un mart financier séparé. <code>dim_date</code>, <code>dim_client</code> (géographie) et <code>dim_produit</code> (catégorie, poids, dimensions) sont mutualisées dans <code>shared/</code> et référencées via <code>ref()</code> par les deux marts.</p>
+      </div>
+
+      <div class="block" style="margin-top:20px;">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Comment calcules-tu le taux de retard de livraison à partir de <code>order_delivered_timestamp</code> vs <code>order_estimated_delivery_date</code> — deux colonnes disponibles uniquement côté backfill ?</li>
+          <li>Comment distingues-tu, dans <code>fact_expeditions</code>, les commandes historiques résolues des commandes en cours issues du flux incrémental, sans fausser tes moyennes de délai (une commande sans date de livraison n'a pas de délai calculable) ?</li>
+          <li>Le panier moyen et la répartition des moyens de paiement se calculent à quel grain, sachant qu'une commande correspond ici à une seule ligne <code>OrderItems</code> ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Ne duplique pas <code>dim_date</code>, <code>dim_client</code> ou <code>dim_produit</code> dans chaque mart métier — matérialise-les une fois dans <code>shared</code> et référence-les partout via <code>ref()</code>.</li>
+          <li>Un <code>fact_expeditions</code> qui mélange commandes résolues et commandes en cours sans distinction claire produira des indicateurs de délai moyen faussés silencieusement.</li>
+        </ul>
+      </div>
+
+      <pre class="snippet">models/marts/
+├── shared/
+│   ├── dim_date.sql
+│   ├── dim_client.sql
+│   └── dim_produit.sql
+├── logistique/                     → alimente Power BI
+│   ├── fact_expeditions.sql        (retard, seller_id, shipping_charges)
+│   └── fact_commandes_en_cours.sql (flux incrémental, statut inconnu)
+└── ventes/                         → alimente Tableau
+    ├── fact_commandes.sql          (price, payment_type/installments/value)
+    └── fact_ventes_categorie.sql</pre>
+
+      <div class="block" style="margin-top:18px;">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://docs.getdbt.com/best-practices/how-we-structure/4-marts" target="_blank">dbt — Structurer les marts</a>
+          <a href="https://docs.getdbt.com/docs/build/exposures" target="_blank">dbt — Exposures (documenter les consommateurs BI)</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="5"><span>Étape validée<span class="crit-label">Critère : <code>fact_expeditions</code> et <code>fact_commandes</code> existent, sont interrogeables dans BigQuery, et aucun des deux ne contient de colonne hors de son périmètre métier.</span></span></label>
+    </section>
+
+    <section class="phase" id="p6">
+      <div class="phase-head"><span class="phase-num">06</span><h2>Tests &amp; qualité des données</h2></div>
+      <p class="phase-goal">Objectif : détecter automatiquement une régression de données avant qu'elle n'atteigne les dashboards.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Quels tests génériques dbt (<code>not_null</code>, <code>unique</code>, <code>relationships</code>, <code>accepted_range</code>) poses-tu, notamment un <code>relationships</code> entre <code>order_id</code> d'<code>OrderItems</code>/<code>Payments</code> et <code>order_id</code> d'<code>Orders</code> ?</li>
+          <li>Un test custom a-t-il du sens pour vérifier que <code>order_delivered_timestamp</code> n'est jamais antérieur à <code>order_purchase_timestamp</code> ?</li>
+          <li>Comment testes-tu spécifiquement que les lignes issues du flux incrémental ne contiennent jamais <code>order_status</code> ni date de livraison — cohérence directe avec la décision de la phase 03 ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Tester uniquement les clés primaires ne suffit pas — un test <code>relationships</code> entre les 5 tables aurait détecté immédiatement un souci de jointure dès le staging.</li>
+          <li>Des tests trop nombreux et non priorisés ralentissent le pipeline sans réel gain ; concentre-toi sur ce qui casserait un dashboard.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://docs.getdbt.com/docs/build/data-tests" target="_blank">dbt — Data tests</a>
+          <a href="https://cloud.google.com/dataplex/docs/data-quality-overview" target="_blank">Dataplex — Data Quality</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="6"><span>Étape validée<span class="crit-label">Critère : <code>dbt test</code> tourne sans échec, et tu peux expliquer ce que chaque test protège concrètement.</span></span></label>
+    </section>
+
+    <section class="phase" id="p7">
+      <div class="phase-head"><span class="phase-num">07</span><h2>Orchestration Airflow</h2></div>
+      <p class="phase-goal">Objectif : un DAG qui gère à la fois le backfill initial (une fois) et le flux incrémental simulé (à intervalles réguliers), avant d'enchaîner <code>dbt run</code> → <code>dbt test</code> → notification.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Un seul DAG avec une logique conditionnelle (backfill au premier run, incrémental ensuite), ou deux DAG distincts (un DAG one-shot de backfill, un DAG planifié pour l'incrémental) — lequel préserve le mieux la lisibilité ?</li>
+          <li>Quelle fréquence de déclenchement choisis-tu pour le DAG incrémental, et comment ça se raccroche à ton découpage en batches de la phase 03 ?</li>
+          <li>Airflow local (Docker Compose) ou Cloud Composer managé — vu le coût de Composer (voir la table des coûts plus bas), lequel choisis-tu et pourquoi ?</li>
+          <li>Que doit faire le DAG en cas d'échec d'un test dbt sur un batch incrémental — bloquer le batch suivant, notifier seulement, ou les deux ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Un DAG incrémental qui relance <code>dbt run</code> en full-refresh à chaque exécution perd l'intérêt de l'incrémental — regarde comment dbt gère la matérialisation <code>incremental</code> si tu veux vraiment ne traiter que les nouvelles lignes.</li>
+          <li>Un DAG qui lance <code>dbt run</code> sans dépendance explicite sur le chargement GCS→BigQuery peut s'exécuter sur des données périmées ou absentes.</li>
+          <li>En local, le conteneur Airflow doit avoir les credentials GCP montés correctement — un oubli classique de configuration.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://airflow.apache.org/docs/apache-airflow/stable/start.html" target="_blank">Airflow — Quickstart</a>
+          <a href="https://cloud.google.com/composer/docs" target="_blank">Cloud Composer docs</a>
+          <a href="https://www.astronomer.io/cosmos/" target="_blank">Astronomer Cosmos (Airflow + dbt)</a>
+          <a href="https://docs.getdbt.com/docs/build/incremental-models" target="_blank">dbt — Modèles incrémentaux</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="7"><span>Étape validée<span class="crit-label">Critère : le DAG exécute le backfill une fois, puis au moins deux cycles incrémentaux successifs sans doublon, visibles dans Airflow.</span></span></label>
+    </section>
+
+    <section class="phase" id="p8">
+      <div class="phase-head"><span class="phase-num">08</span><h2>Dashboard Power BI — Logistique &amp; Livraison</h2></div>
+      <p class="phase-goal">Objectif : un dashboard opérationnel, connecté aux marts <code>logistique</code>, distinguant clairement performance historique et suivi des commandes en cours.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Quel est le taux de retard de livraison par état/ville, sur les données historiques (backfill) ?</li>
+          <li>Quels vendeurs (<code>seller_id</code>) cumulent le plus de retards ou de commandes annulées ?</li>
+          <li>Comment représentes-tu les commandes en cours (flux incrémental, sans statut final) dans un espace séparé, pour ne pas polluer tes KPI de délai moyen ?</li>
+          <li>Quel est le coût de port moyen par région ?</li>
+          <li>Comment structures-tu les onglets pour que le dashboard reste lisible pour un utilisateur métier pressé ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Connecte Power BI directement à BigQuery (connecteur natif) plutôt qu'à un export CSV.</li>
+          <li>Ne mélange jamais commandes résolues et commandes en cours dans un même visuel de délai moyen — le résultat serait trompeur.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://learn.microsoft.com/power-bi/connect-data/desktop-google-bigquery" target="_blank">Power BI — connecteur BigQuery</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="8"><span>Étape validée<span class="crit-label">Critère : le dashboard distingue clairement performance historique et suivi des commandes en cours, sans que tu aies besoin de l'expliquer à l'oral.</span></span></label>
+    </section>
+
+    <section class="phase" id="p9">
+      <div class="phase-head"><span class="phase-num">09</span><h2>Dashboard Tableau — Ventes &amp; Produits</h2></div>
+      <p class="phase-goal">Objectif : un dashboard d'analyse exploratoire, connecté aux marts <code>ventes</code>, pour une lecture plus stratégique que Power BI.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Quelles catégories de produits génèrent le plus de volume et de valeur de commandes ?</li>
+          <li>Quelle est la répartition des moyens de paiement (<code>payment_type</code>) et du nombre de mensualités, par état/région ?</li>
+          <li>Quel est le panier moyen par catégorie ?</li>
+          <li>Quelles catégories ont le taux d'annulation le plus élevé (<code>order_status</code>) ?</li>
+          <li>Peux-tu établir un lien narratif, via <code>dim_date</code> commune, entre pics de volume de commandes et pics de retards de livraison côté Power BI ?</li>
+          <li>Tableau Public ou Tableau Desktop — quel est l'impact du choix sur la confidentialité de tes données ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label warn">Pièges connus</div>
+        <ul class="pitfall-list">
+          <li>Le connecteur BigQuery de Tableau Public est limité — vérifie si tu dois exporter un extrait plutôt que de connecter en direct.</li>
+          <li>Publier sur Tableau Public rend le classeur <strong>et les données</strong> visibles publiquement.</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://help.tableau.com/current/pro/desktop/en-us/examples_bigquery.htm" target="_blank">Tableau — connecteur BigQuery</a>
+          <a href="https://public.tableau.com/en-us/s/resources" target="_blank">Tableau Public — ressources</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="9"><span>Étape validée<span class="crit-label">Critère : le dashboard permet de raconter une histoire complète en moins de deux minutes, du volume de commandes jusqu'à la performance par catégorie/paiement.</span></span></label>
+    </section>
+
+    <section class="phase" id="p10">
+      <div class="phase-head"><span class="phase-num">10</span><h2>Documentation &amp; mise en portfolio</h2></div>
+      <p class="phase-goal">Objectif : rendre le projet lisible et crédible pour quelqu'un qui ne l'a pas construit avec toi.</p>
+
+      <div class="block">
+        <div class="block-label">Questions à investiguer</div>
+        <ul class="q-list">
+          <li>Comment expliques-tu en quelques phrases, dans le README, pourquoi ce dataset (5 tables + flux train/test) a remplacé DataCo, et ce que ça apporte en termes d'apprentissage ?</li>
+          <li>Comment expliques-tu la distinction commandes historiques / commandes en cours sans que ce soit confus pour un lecteur pressé ?</li>
+          <li><code>dbt docs generate</code> donne-t-il une documentation suffisante des modèles, ou dois-tu enrichir les descriptions dans les fichiers <code>.yml</code> ?</li>
+          <li>Quelles captures d'écran ou courtes vidéos des deux dashboards vas-tu inclure ?</li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <div class="block-label brass">Documentation utile</div>
+        <div class="doc-links">
+          <a href="https://docs.getdbt.com/docs/collaborate/documentation" target="_blank">dbt — Documentation du projet</a>
+        </div>
+      </div>
+
+      <label class="done-check"><input type="checkbox" data-idx="10"><span>Étape validée<span class="crit-label">Critère : un tiers qui lit ton README comprend en cinq minutes l'architecture, le choix du flux incrémental, et où regarder chaque dashboard.</span></span></label>
+    </section>
+
+    <section id="couts">
+      <h2 style="font-size:1.5rem; margin-bottom:6px;">Combien ce projet peut coûter</h2>
+      <p style="color:var(--muted); margin:0 0 20px; max-width:64ch;">Estimations pour un usage individuel, à l'échelle des 5 tables de ce projet (~127 000 lignes au total) — pas des tarifs entreprise. Vérifie toujours les tarifs à jour avant de t'engager, les grilles évoluent.</p>
+
+      <div class="callout">
+        <strong>Point de vigilance n°1 :</strong> Cloud Composer (Airflow managé sur GCP) n'est pas gratuit et facture même à l'arrêt — un environnement minimal tourne autour de plusieurs dizaines de dollars par mois. Pour ce projet, Airflow en local via Docker Compose est largement suffisant et gratuit.
+      </div>
+
+      <table class="cost">
+        <caption>Google Cloud Platform</caption>
+        <tr><th>Service</th><th>Coût pour ce projet</th><th>Détail</th></tr>
+        <tr><td>Cloud Storage</td><td><span class="pill free">Gratuit</span></td><td>5 fichiers CSV totalisant quelques dizaines de Mo — largement dans le niveau gratuit (5 Go/mois)</td></tr>
+        <tr><td>BigQuery — stockage</td><td><span class="pill free">Gratuit</span></td><td>10 Go de stockage actif gratuits par mois, très largement suffisant pour ce volume</td></tr>
+        <tr><td>BigQuery — requêtes</td><td><span class="pill free">Gratuit</span></td><td>1 To de requêtes gratuites par mois ; un projet de cette taille reste très en dessous</td></tr>
+        <tr><td>Cloud Composer (Airflow managé)</td><td><span class="pill warn">Payant, évitable</span></td><td>Facture en continu même sans exécution de DAG — utilise Airflow local via Docker à la place</td></tr>
+        <tr><td>Cloud Run functions</td><td><span class="pill free">Gratuit</span></td><td>Niveau gratuit très généreux (2 millions d'appels/mois) pour un déclenchement occasionnel</td></tr>
+        <tr><td>Cloud Scheduler</td><td><span class="pill free">Gratuit</span></td><td>3 tâches planifiées gratuites par mois et par projet — suffisant pour déclencher le flux incrémental de la phase 03</td></tr>
+      </table>
+
+      <table class="cost">
+        <caption>Transformation &amp; orchestration</caption>
+        <tr><th>Outil</th><th>Coût pour ce projet</th><th>Détail</th></tr>
+        <tr><td>dbt Core (CLI)</td><td><span class="pill free">Gratuit</span></td><td>Open source, illimité, tourne en local</td></tr>
+        <tr><td>dbt Cloud (si IDE web préféré)</td><td><span class="pill low">Gratuit (tier développeur)</span></td><td>Tier gratuit pour un développeur solo — vérifie les limites actuelles avant de t'y engager</td></tr>
+        <tr><td>Airflow (Docker Compose, local)</td><td><span class="pill free">Gratuit</span></td><td>Tourne sur ta machine, aucune facturation cloud</td></tr>
+      </table>
+
+      <table class="cost">
+        <caption>Visualisation</caption>
+        <tr><th>Outil</th><th>Coût pour ce projet</th><th>Détail</th></tr>
+        <tr><td>Power BI Desktop</td><td><span class="pill free">Gratuit</span></td><td>Création et édition illimitées en local, suffisant pour un portfolio</td></tr>
+        <tr><td>Power BI Pro (partage en ligne)</td><td><span class="pill low">~9–10 €/mois</span></td><td>Nécessaire seulement pour publier/partager en ligne ; pas indispensable si tu restes en local ou exportes en PDF</td></tr>
+        <tr><td>Tableau Public</td><td><span class="pill free">Gratuit</span></td><td>Idéal pour un portfolio — attention, classeurs et données deviennent visibles publiquement</td></tr>
+        <tr><td>Tableau Desktop</td><td><span class="pill warn">~70 $/mois</span></td><td>Non nécessaire ici ; Tableau Public suffit</td></tr>
+      </table>
+
+      <div class="total-box">
+        <div>
+          <div class="amount">≈ 0 €</div>
+          <div class="label">En restant sur le niveau gratuit GCP, Airflow local (Docker), Power BI Desktop et Tableau Public, le projet complet peut être mené sans dépense — hors dépassement accidentel de quota.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  Feuille de route générée pour accompagner ton apprentissage — chaque case cochée doit correspondre à quelque chose que tu as réellement compris et testé, pas seulement exécuté. La progression n'est pas sauvegardée entre deux ouvertures du fichier : garde une trace de ton avancement dans ton propre README si besoin.
+</footer>
+
+<script>
+  const checkboxes = document.querySelectorAll('.done-check input[type="checkbox"]');
+  const tocLinks = document.querySelectorAll('#toc a[data-idx]');
+  const fill = document.getElementById('progress-fill');
+  const count = document.getElementById('progress-count');
+  const TOTAL = checkboxes.length;
+
+  function updateProgress(){
+    let done = 0;
+    checkboxes.forEach(cb => { if(cb.checked) done++; });
+    count.textContent = done;
+    fill.style.width = (done / TOTAL * 100) + '%';
+    tocLinks.forEach(link => {
+      const idx = link.getAttribute('data-idx');
+      const cb = document.querySelector('.done-check input[data-idx="'+idx+'"]');
+      if(cb && cb.checked){ link.classList.add('done'); } else { link.classList.remove('done'); }
+    });
+  }
+  checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+  updateProgress();
+
+  const sections = document.querySelectorAll('section.phase, #couts');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('#toc a[href="#'+id+'"]');
+        if(active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
