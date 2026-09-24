@@ -1,0 +1,28 @@
+# Données brutes — licence non confirmée, ne pas publier
+Ecommerce Order Dataset/
+
+# Credentials GCP
+*.json.key
+*service-account*.json
+*credentials*.json
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# dbt
+target/
+dbt_packages/
+logs/
+
+# Airflow (local)
+airflow/logs/
+
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
