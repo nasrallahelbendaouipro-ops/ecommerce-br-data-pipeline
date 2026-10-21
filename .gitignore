@@ -1,6 +1,11 @@
 # Données brutes — licence non confirmée, ne pas publier
 Ecommerce Order Dataset/
 
+# Données locales (CSV source et lots générés)
+data/
+lots/
+source/
+
 # Credentials GCP
 *.json.key
 *service-account*.json
