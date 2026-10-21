@@ -25,7 +25,7 @@ Le test set ne contient ni `order_status`, ni date de livraison réelle, ni date
 - [x] 00 · Cadrage & datasets
 - [x] 01 · Socle GCP
 - [x] 02 · Ingestion initiale (backfill train)
-- [ ] 03 · Ingestion incrémentale (flux test simulé) — en cours
+- [x] 03 · Ingestion incrémentale (flux test simulé)
 - [ ] 04 · dbt — staging
 - [ ] 05 · dbt — marts
 - [ ] 06 · Tests & qualité
