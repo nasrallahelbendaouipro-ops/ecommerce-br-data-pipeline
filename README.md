@@ -22,10 +22,10 @@ Le test set ne contient ni `order_status`, ni date de livraison réelle, ni date
 
 ## Avancement
 
-- [ ] 00 · Cadrage & datasets
-- [ ] 01 · Socle GCP
-- [ ] 02 · Ingestion initiale (backfill train)
-- [ ] 03 · Ingestion incrémentale (flux test simulé)
+- [x] 00 · Cadrage & datasets
+- [x] 01 · Socle GCP
+- [x] 02 · Ingestion initiale (backfill train)
+- [ ] 03 · Ingestion incrémentale (flux test simulé) — en cours
 - [ ] 04 · dbt — staging
 - [ ] 05 · dbt — marts
 - [ ] 06 · Tests & qualité
@@ -35,6 +35,12 @@ Le test set ne contient ni `order_status`, ni date de livraison réelle, ni date
 - [ ] 10 · Documentation & portfolio
 
 Feuille de route détaillée : [`docs/feuille-de-route.html`](docs/feuille-de-route.html) (à ouvrir dans un navigateur).
+
+## Ingestion incrémentale
+
+Scénario : le rattrapage d'un système source non encore migré. Le jeu test est découpé en 24 lots mensuels (`scripts/decouper_lots_test.py`) stockés dans une zone `source/` du bucket, hors du pipeline. Chaque run du DAG quotidien livre un mois : il copie le lot de `source/test/<table>/mois=AAAA-MM/` vers `raw/<table>/load_type=incremental/load_date=<date du run>/`, puis lance `dbt run` et `dbt test`.
+
+Les tables `raw` sont des tables externes BigQuery sur ces dossiers : déposer un fichier suffit, et rejouer un run réécrit le même fichier, sans doublon. Détail des choix : [`docs/decisions.md`](docs/decisions.md). DDL : `sql/raw/`, contrôles : `sql/controles/`.
 
 ## Modélisation cible
 
