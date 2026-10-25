@@ -4,6 +4,9 @@ profile: 'ecommerce_br'
 
 model-paths: ["models"]
 
+vars:
+  reference_date: '2018-09-03'
+
 models:
   ecommerce_br:
     staging:
