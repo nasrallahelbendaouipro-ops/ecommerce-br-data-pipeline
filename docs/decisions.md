@@ -51,3 +51,33 @@ Une entrée par décision : contexte, décision, raison.
 - **Contexte :** DAG quotidien, 24 lots (la mise en œuvre est en phase 07).
 - **Décision :** mois livré calculé à partir de `ds` et du `start_date` (jours écoulés), sans compteur ni comptage de dossiers ; `catchup=True` ; `end_date` = `start_date` + 23 jours. Chaque run copie le lot de `source/` vers `raw/`, puis `dbt run`, puis `dbt test`.
 - **Raison :** un retry ou un clear redonne le même mois ; un jour d'arrêt du PC ne crée pas de trou. Le choix du `start_date` (aujourd'hui ou passé) reste à trancher.
+
+## Staging : fidèle à la source, une ligne par entité
+- **Contexte :** `raw` contient le train et les lots du test, avec des doublons exacts dans `products` et des zéros initiaux perdus dans les codes postaux.
+- **Décision :** 5 vues `stg_*`, sans jointure ; `nullif` avant `cast` (le vide devient `NULL`, une valeur corrompue fait échouer le modèle) ; montants en `NUMERIC` ; préfixes postaux remis sur 5 caractères avec `lpad` ; `stg_products` dédoublonné par `product_id` ; `is_outcome_unknown` dérivé dans `stg_orders` sans inventer de statut.
+- **Raison :** le staging nettoie le bruit sans corriger le métier ; les valeurs suspectes (poids à 0, livraison sans date) sont laissées visibles pour les tests de la phase 06.
+
+## Datasets et macro `generate_schema_name`
+- **Contexte :** par défaut dbt concatène le dataset du profil et le dataset personnalisé (`staging_marts`).
+- **Décision :** macro `generate_schema_name` surchargée ; staging dans `staging` (dataset du profil), marts dans `marts` via `+schema: marts`.
+- **Raison :** un dataset par couche (raw, staging, marts), et un accès des dashboards limité à `marts`.
+
+## Commande résolue
+- **Contexte :** 87 428 commandes `delivered` dans le train, mais 6 sans date de livraison.
+- **Décision :** résolue = statut `delivered` ET date de livraison non nulle (87 422 commandes dans `fact_expeditions`). Les commandes sans statut (flux incrémental) vont dans `fact_commandes_en_cours`, jamais mélangées aux délais.
+- **Raison :** un délai sans date de livraison fausserait silencieusement les moyennes. Les 6 `delivered` sans date seront signalées par un test `warn` sur `stg_orders` (phase 06).
+
+## `dim_date` : années civiles 2016 à 2018
+- **Contexte :** les dates vont du 2016-09-04 (achat) au 2018-10-25 (livraison estimée).
+- **Décision :** calendrier du 2016-01-01 au 2018-12-31 (1 096 jours), généré avec `GENERATE_DATE_ARRAY`.
+- **Raison :** il doit couvrir toutes les dates jointes par les faits, pas seulement les dates d'achat.
+
+## Grain des marts
+- **Contexte :** dans ce jeu de données, une commande a un article et un paiement.
+- **Décision :** `fact_commandes`, `fact_expeditions` et `fact_commandes_en_cours` ont une ligne par commande ; `fact_ventes_categorie` une ligne par catégorie et par mois d'achat ; `dim_client` et `dim_produit` n'ont ni `load_type` ni `load_date`. `payment_sequential` n'est pas repris dans `fact_commandes`.
+- **Raison :** les clés sont uniques (vérifié) et les métadonnées de chargement ne sont pas des attributs métier.
+
+## Date de référence fixe
+- **Contexte :** l'ancienneté d'une commande en cours ne doit pas dépendre de la date d'exécution.
+- **Décision :** variable dbt `reference_date: '2018-09-03'` dans `dbt_project.yml`, utilisée par `fact_commandes_en_cours` (`days_since_purchase`).
+- **Raison :** résultats reproductibles. À revoir : les lots du test s'étalent sur deux ans, donc avec une date fixe toutes les commandes en cours paraissent anciennes (693 à 700 jours pour le lot 2016-10).
