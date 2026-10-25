@@ -28,7 +28,7 @@ Le test set ne contient ni `order_status`, ni date de livraison réelle, ni date
 - [x] 03 · Ingestion incrémentale (flux test simulé)
 - [x] 04 · dbt — staging
 - [x] 05 · dbt — marts
-- [ ] 06 · Tests & qualité
+- [x] 06 · Tests & qualité
 - [ ] 07 · Orchestration Airflow
 - [ ] 08 · Dashboard Power BI — Logistique & Livraison
 - [ ] 09 · Dashboard Tableau — Ventes & Produits

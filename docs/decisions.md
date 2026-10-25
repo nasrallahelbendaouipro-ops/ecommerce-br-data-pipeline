@@ -81,3 +81,8 @@ Une entrée par décision : contexte, décision, raison.
 - **Contexte :** l'ancienneté d'une commande en cours ne doit pas dépendre de la date d'exécution.
 - **Décision :** variable dbt `reference_date: '2018-09-03'` dans `dbt_project.yml`, utilisée par `fact_commandes_en_cours` (`days_since_purchase`).
 - **Raison :** résultats reproductibles. À revoir : les lots du test s'étalent sur deux ans, donc avec une date fixe toutes les commandes en cours paraissent anciennes (693 à 700 jours pour le lot 2016-10).
+
+## Tests et qualité : génériques, singuliers, sévérité
+- **Contexte :** `accepted_range` n'existe pas dans dbt de base (il vient de `dbt_utils`) ; la source contient des anomalies connues (6 `delivered` sans date, 4 poids à 0, 3 paiements à 0 mensualité).
+- **Décision :** pas de package. Tests génériques (`unique`, `not_null`, `accepted_values`, `relationships`) dans `_staging.yml` et `_marts.yml` ; règles métier et plages de valeurs en tests singuliers dans `dbt/tests/`. Les anomalies connues de la source sont en `severity: warn`, les violations de règles métier en `error`.
+- **Raison :** un test qui échoue doit signaler un bug ou une régression ; une anomalie déjà identifiée dans la source est signalée sans bloquer `dbt build` ni le futur DAG Airflow. Le test sur les `delivered` sans date porte sur `stg_orders` : `fact_expeditions` les exclut déjà.
