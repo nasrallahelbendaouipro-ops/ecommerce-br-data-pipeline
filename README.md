@@ -67,7 +67,9 @@ models/
 
 ## Données
 
-Les CSV sources **ne sont pas versionnés** dans ce dépôt (voir `.gitignore`) : la source et la licence d'origine ne sont pas encore confirmées. Structure attendue en local :
+**Source :** [« Ecommerce Order & Supply Chain Dataset »](https://www.kaggle.com/datasets/bytadit/ecommerce-order-dataset/data), par `bytadit` sur Kaggle, sous licence [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Les données ont été modifiées : rechargées dans BigQuery, nettoyées et modélisées avec dbt. Ce dépôt n'en redistribue aucune.
+
+Les CSV sources **ne sont pas versionnés** dans ce dépôt (voir `.gitignore`), pas plus que les fichiers Power BI `.pbix` qui en contiennent une copie. Structure attendue en local :
 
 ```
 Ecommerce Order Dataset/

@@ -36,7 +36,7 @@ Notes de qualité de données déjà identifiées :
 - IDs (`order_id`, `customer_id`, `product_id`, `seller_id`) : chaînes alphanumériques aléatoires, pas des entiers.
 - 1 commande = 1 ligne dans `OrderItems` dans ce jeu de données (pas de multi-articles par commande).
 - Encodage propre (ASCII), pas de problème d'accents contrairement à l'ancien dataset DataCo.
-- Aucun README dans l'archive fournie — source/licence d'origine non confirmée, à vérifier avant publication en portfolio public.
+- Source : Kaggle `bytadit/ecommerce-order-dataset`, licence CC BY-NC-SA 4.0 (attribution, non commercial, partage dans les mêmes conditions). Ne jamais publier les CSV, les `.pbix` en mode Import ni d'export des marts : code et captures avec attribution uniquement.
 
 À vérifier en phase 00 : unicité de `product_id` dans `Products` et de `customer_id` dans `Customers` (mêmes volumes que `Orders`), et sens de `payment_sequential` dans `Payments` — impacte le grain de `dim_produit` / `dim_client`.
 
