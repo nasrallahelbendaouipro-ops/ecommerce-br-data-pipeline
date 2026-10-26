@@ -29,7 +29,7 @@ Le test set ne contient ni `order_status`, ni date de livraison réelle, ni date
 - [x] 04 · dbt — staging
 - [x] 05 · dbt — marts
 - [x] 06 · Tests & qualité
-- [ ] 07 · Orchestration Airflow
+- [x] 07 · Orchestration Airflow
 - [ ] 08 · Dashboard Power BI — Logistique & Livraison
 - [ ] 09 · Dashboard Tableau — Ventes & Produits
 - [ ] 10 · Documentation & portfolio
@@ -41,6 +41,18 @@ Feuille de route détaillée : [`docs/feuille-de-route.html`](docs/feuille-de-ro
 Scénario : le rattrapage d'un système source non encore migré. Le jeu test est découpé en 24 lots mensuels (`scripts/decouper_lots_test.py`) stockés dans une zone `source/` du bucket, hors du pipeline. Chaque run du DAG quotidien livre un mois : il copie le lot de `source/test/<table>/mois=AAAA-MM/` vers `raw/<table>/load_type=incremental/load_date=<date du run>/`, puis lance `dbt run` et `dbt test`.
 
 Les tables `raw` sont des tables externes BigQuery sur ces dossiers : déposer un fichier suffit, et rejouer un run réécrit le même fichier, sans doublon. Détail des choix : [`docs/decisions.md`](docs/decisions.md). DDL : `sql/raw/`, contrôles : `sql/controles/`.
+
+## Orchestration (Airflow local)
+
+Le DAG `ecommerce_br_incremental` (`airflow/dags/`) livre un lot mensuel par run quotidien : copie des 5 tables de `source/` vers `raw/`, puis `dbt run`, `dbt test` et une notification. Il tourne dans Docker Compose (LocalExecutor + PostgreSQL), avec dbt installé dans un environnement virtuel de l'image aux versions de `requirements.txt`.
+
+Pour le lancer (Docker Desktop requis) :
+
+1. Créer `airflow/.env` à partir de `airflow/.env.example`.
+2. Placer la clé d'un compte de service dans `airflow/secrets/gcp-key.json` (dossier ignoré par git, jamais commité).
+3. Depuis `airflow/` : `docker compose up -d`, puis ouvrir http://localhost:8080 et activer le DAG (il est créé en pause).
+
+Avec `catchup=True`, les 24 runs (du 2 au 25 octobre 2026, un lot chacun) s'enchaînent d'un coup. Le mois livré se calcule depuis la date du run : un retry redonne le même lot, sans doublon. Détails : [`docs/decisions.md`](docs/decisions.md).
 
 ## Modélisation cible
 

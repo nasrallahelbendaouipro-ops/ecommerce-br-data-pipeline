@@ -1,0 +1,13 @@
+# Profil dbt utilisé dans le conteneur Airflow (le profil local de développement est dans ~/.dbt).
+# Aucun secret ici : seule la clé de compte de service, montée en lecture seule, est référencée par son chemin.
+ecommerce_br:
+  target: airflow
+  outputs:
+    airflow:
+      type: bigquery
+      method: service-account
+      project: sonorous-lyceum-506109-a5
+      dataset: staging
+      location: us-central1
+      threads: 4
+      keyfile: /opt/airflow/secrets/gcp-key.json
