@@ -6,6 +6,9 @@ data/
 lots/
 source/
 
+# Power BI (un .pbix en mode Import contient une copie des données, sous licence CC BY-NC-SA)
+*.pbix
+
 # Credentials GCP
 *.json.key
 *service-account*.json

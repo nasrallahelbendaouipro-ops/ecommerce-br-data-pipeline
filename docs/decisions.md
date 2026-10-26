@@ -101,3 +101,8 @@ Une entrée par décision : contexte, décision, raison.
 - **Contexte :** un conteneur n'a pas accès au `gcloud` local. Sur la machine de développement, ses connexions directes à Internet expirent et seul le proxy interne de Docker Desktop passe.
 - **Décision :** clé JSON du compte de service montée en lecture seule depuis `airflow/secrets/` (ignoré par git, jamais copiée dans l'image) ; la règle d'organisation `iam.disableServiceAccountKeyCreation` n'est levée que le temps de créer la clé, puis rétablie ; une clé orpheline créée par erreur a été supprimée. Le proxy est optionnel (variables `HTTP_PROXY`, `HTTPS_PROXY` et `NO_PROXY` dans `airflow/.env`, jamais commité).
 - **Raison :** moindre privilège (rôles du compte limités au stockage et à BigQuery), aucun secret dans le dépôt, et un compose qui reste portable.
+
+## Source des données et licence (CC BY-NC-SA 4.0)
+- **Contexte :** le jeu de données vient de Kaggle (`bytadit/ecommerce-order-dataset`), sous licence CC BY-NC-SA 4.0 : attribution obligatoire, usage non commercial, partage des adaptations dans les mêmes conditions.
+- **Décision :** aucune donnée n'est redistribuée par le dépôt (CSV et fichiers `.pbix` ignorés par git) ; la source, l'auteur et la licence sont cités dans le README, avec la mention que les données ont été modifiées. Pour le portfolio : code et captures d'écran avec attribution, pas d'export de données.
+- **Raison :** un `.pbix` en mode Import ou un export des marts serait une adaptation des données, qu'il faudrait republier sous la même licence ; le code, lui, est propre au projet.
