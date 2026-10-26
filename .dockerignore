@@ -1,0 +1,4 @@
+# Le contexte de build est la racine du dépôt : on n'envoie à Docker que requirements.txt
+# (sinon les CSV, le .venv et le dépôt git seraient copiés à chaque build).
+*
+!requirements.txt

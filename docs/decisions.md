@@ -86,3 +86,18 @@ Une entrée par décision : contexte, décision, raison.
 - **Contexte :** `accepted_range` n'existe pas dans dbt de base (il vient de `dbt_utils`) ; la source contient des anomalies connues (6 `delivered` sans date, 4 poids à 0, 3 paiements à 0 mensualité).
 - **Décision :** pas de package. Tests génériques (`unique`, `not_null`, `accepted_values`, `relationships`) dans `_staging.yml` et `_marts.yml` ; règles métier et plages de valeurs en tests singuliers dans `dbt/tests/`. Les anomalies connues de la source sont en `severity: warn`, les violations de règles métier en `error`.
 - **Raison :** un test qui échoue doit signaler un bug ou une régression ; une anomalie déjà identifiée dans la source est signalée sans bloquer `dbt build` ni le futur DAG Airflow. Le test sur les `delivered` sans date porte sur `stg_orders` : `fact_expeditions` les exclut déjà.
+
+## Airflow : LocalExecutor, dbt dans son propre venv
+- **Contexte :** Airflow tourne dans un conteneur Linux, avec ses propres dépendances ; Cloud Composer est exclu (payant).
+- **Décision :** Docker Compose en LocalExecutor + PostgreSQL (pas de Redis ni de worker Celery) ; image Airflow 3.3.2 étendue avec un venv dbt installé depuis `requirements.txt` ; `dbt run` et `dbt test` lancés par des `BashOperator`. Le profil dbt du conteneur (`airflow/dbt_profiles/profiles.yml`) utilise `method: service-account` et ne contient aucun secret.
+- **Raison :** mêmes versions de dbt en local et dans Airflow, sans conflit de dépendances, et une empreinte mémoire réduite pour une machine personnelle.
+
+## DAG : un lot par run, calculé depuis la date logique
+- **Contexte :** 24 lots mensuels à livrer, avec une publication proche.
+- **Décision :** `start_date` fixé au 2026-10-02 (pas de date relative), `end_date` = `start_date` + 23 jours, `catchup=True`, `max_active_runs=1` : les 24 runs se rattrapent d'un coup, un à la fois. Le mois livré se déduit de la date logique, la copie GCS écrase la même destination à chaque tentative, et le DAG est créé en pause.
+- **Raison :** idempotence (retry ou clear sans doublon), résultats reproductibles, et rien ne s'exécute vers GCS et BigQuery avant l'activation volontaire. Le test `unique` sur `order_id` interdit aussi de laisser une copie manuelle du même lot sous un autre `load_date`.
+
+## Identifiants GCP du conteneur et réseau Docker
+- **Contexte :** un conteneur n'a pas accès au `gcloud` local. Sur la machine de développement, ses connexions directes à Internet expirent et seul le proxy interne de Docker Desktop passe.
+- **Décision :** clé JSON du compte de service montée en lecture seule depuis `airflow/secrets/` (ignoré par git, jamais copiée dans l'image) ; la règle d'organisation `iam.disableServiceAccountKeyCreation` n'est levée que le temps de créer la clé, puis rétablie ; une clé orpheline créée par erreur a été supprimée. Le proxy est optionnel (variables `HTTP_PROXY`, `HTTPS_PROXY` et `NO_PROXY` dans `airflow/.env`, jamais commité).
+- **Raison :** moindre privilège (rôles du compte limités au stockage et à BigQuery), aucun secret dans le dépôt, et un compose qui reste portable.

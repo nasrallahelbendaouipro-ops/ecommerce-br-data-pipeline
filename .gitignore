@@ -25,6 +25,7 @@ logs/
 
 # Airflow (local)
 airflow/logs/
+airflow/secrets/
 
 # OS / éditeurs
 .DS_Store
