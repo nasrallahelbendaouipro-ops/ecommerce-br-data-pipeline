@@ -1,0 +1,48 @@
+table dim_client
+	lineageTag: 917ee8cf-cd2d-4b1c-977e-3cc234058a34
+
+	column customer_id
+		dataType: string
+		lineageTag: d409b302-827e-4d9f-a344-8c3a9213b08f
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_zip_code_prefix
+		dataType: string
+		lineageTag: 73896bc3-38cf-4441-b814-c82664411f9f
+		summarizeBy: none
+		sourceColumn: customer_zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_city
+		dataType: string
+		lineageTag: ac049393-4747-460d-a5d1-937ffc0cbe2c
+		summarizeBy: none
+		sourceColumn: customer_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		lineageTag: 1c1a3942-1b4a-49c7-b6b7-359dec87d786
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_client = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = "sonorous-lyceum-506109-a5", UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null]),
+				  #"Navigation 1" = Source{[Name = "sonorous-lyceum-506109-a5"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "marts", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_client", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

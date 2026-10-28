@@ -1,0 +1,115 @@
+table dim_date
+	lineageTag: 959ef6f7-6797-4206-ba3c-2ff7db3d3b85
+	dataCategory: Time
+
+	column date_day
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: cab77642-2330-4744-bdb2-4ccc4ca03969
+		summarizeBy: none
+		sourceColumn: date_day
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a2ee20a-4959-4b30-b8cf-f6c7ef1be516
+		summarizeBy: sum
+		sourceColumn: year_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 06e704f0-1082-48ae-99da-f9907b0c1355
+		summarizeBy: sum
+		sourceColumn: quarter_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 390944cd-5a28-4543-a488-d21c18036790
+		summarizeBy: sum
+		sourceColumn: month_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: c012bd49-1814-4d43-9da7-48095e4d5628
+		summarizeBy: none
+		sourceColumn: month_name
+		sortByColumn: month_number
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: 5c7eef94-63a5-4328-8fa7-593e77815e90
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_month
+		dataType: int64
+		formatString: 0
+		lineageTag: 586914c4-ceba-4b17-a4fb-5e8c0435bbcd
+		summarizeBy: sum
+		sourceColumn: day_of_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 12ac5010-6e55-4abd-bcae-c63bcba55f30
+		summarizeBy: sum
+		sourceColumn: day_of_week_number
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week_name
+		dataType: string
+		lineageTag: b6eb330f-6fe0-49aa-82e9-566d4c2ff85c
+		summarizeBy: none
+		sourceColumn: day_of_week_name
+		sortByColumn: day_of_week_number
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8b9fa4f1-df4c-4c30-9671-bf8a3f93dbff
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = "sonorous-lyceum-506109-a5", UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null]),
+				  #"Navigation 1" = Source{[Name = "sonorous-lyceum-506109-a5"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "marts", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_date", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

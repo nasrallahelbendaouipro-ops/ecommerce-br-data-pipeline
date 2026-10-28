@@ -1,0 +1,87 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 49.275214088058455,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 189.18475118062986,
+            "y": 0
+          },
+          "nodeIndex": "dim_client",
+          "nodeLineageTag": "917ee8cf-cd2d-4b1c-977e-3cc234058a34",
+          "size": {
+            "height": 343.05423525694971,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 495.52656498729624,
+            "y": 542.99529908121178
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "959ef6f7-6797-4206-ba3c-2ff7db3d3b85",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 589.04563774050985,
+            "y": 136.70531528217285
+          },
+          "nodeIndex": "fact_commandes_en_cours",
+          "nodeLineageTag": "09aa9393-0dd6-40eb-9821-631f4ad82b30",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 31.0053292392557,
+            "y": 449.35863558889548
+          },
+          "nodeIndex": "fact_expeditions",
+          "nodeLineageTag": "2534dc5c-0175-4d4a-935a-ddad77e23d17",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 970.25642429617335,
+            "y": 143.23391578486633
+          },
+          "nodeIndex": "_Mesures",
+          "nodeLineageTag": "42ea66ad-d2da-4529-8e4b-8c1076c1dda4",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Toutes les tables",
+      "zoomValue": 79.553182037699827,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Toutes les tables",
+  "defaultDiagram": "Toutes les tables"
+}

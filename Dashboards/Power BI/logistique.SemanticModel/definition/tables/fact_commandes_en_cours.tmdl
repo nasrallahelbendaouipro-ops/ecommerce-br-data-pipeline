@@ -1,0 +1,99 @@
+table fact_commandes_en_cours
+	lineageTag: 09aa9393-0dd6-40eb-9821-631f4ad82b30
+
+	column order_id
+		dataType: string
+		lineageTag: 7c9e189a-bed4-4003-9544-3e55f70c5b0a
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: 51cf936d-c231-4552-ac5c-accd2fba323f
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_id
+		dataType: string
+		lineageTag: 4e4c5cf1-d329-4d70-a01a-02f66e6c4103
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_charges
+		dataType: double
+		lineageTag: ea27c779-afad-4b21-946a-b0ab6725b2cb
+		summarizeBy: sum
+		sourceColumn: shipping_charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column purchase_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 00a11aa5-e0de-4f7f-be94-f25976484ee0
+		summarizeBy: none
+		sourceColumn: purchase_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column approved_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9b05c9e5-a9d6-4dc6-8ac3-e697994f1200
+		summarizeBy: none
+		sourceColumn: approved_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d9d9078d-0f92-4acd-892a-65d2f53cb687
+		summarizeBy: none
+		sourceColumn: purchase_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column reference_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 35c3843f-a6b6-4b2d-9e59-4e4578320420
+		summarizeBy: none
+		sourceColumn: reference_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column days_since_purchase
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c06d197-a48c-4991-ba15-38a5aa75f8df
+		summarizeBy: sum
+		sourceColumn: days_since_purchase
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_commandes_en_cours = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = "sonorous-lyceum-506109-a5", UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null]),
+				  #"Navigation 1" = Source{[Name = "sonorous-lyceum-506109-a5"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "marts", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "fact_commandes_en_cours", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+
