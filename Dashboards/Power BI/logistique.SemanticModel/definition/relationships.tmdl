@@ -1,0 +1,26 @@
+relationship a0b2a322-cd5a-8f5a-c785-013d720886be
+	fromColumn: fact_expeditions.delivered_date
+	toColumn: dim_date.date_day
+
+relationship 08b4d80b-c3bc-ef71-babd-019823757461
+	isActive: false
+	fromColumn: fact_expeditions.purchase_date
+	toColumn: dim_date.date_day
+
+relationship e3b4151c-3aa0-ada8-537b-dad171393ecc
+	isActive: false
+	fromColumn: fact_expeditions.estimated_delivery_date
+	toColumn: dim_date.date_day
+
+relationship daa0a801-0afc-6eeb-1edd-a8f042393d88
+	fromColumn: fact_commandes_en_cours.purchase_date
+	toColumn: dim_date.date_day
+
+relationship 00611d22-5abb-885a-c7af-9310736bc9f2
+	fromColumn: fact_expeditions.customer_id
+	toColumn: dim_client.customer_id
+
+relationship 919cbde7-2845-a7b4-07c7-d6d0532ad056
+	fromColumn: fact_commandes_en_cours.customer_id
+	toColumn: dim_client.customer_id
+

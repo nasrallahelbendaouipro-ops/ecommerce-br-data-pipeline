@@ -1,0 +1,45 @@
+table _Mesures
+	lineageTag: 42ea66ad-d2da-4529-8e4b-8c1076c1dda4
+
+	measure 'Commandes livrées' = COUNTROWS ( fact_expeditions )
+		formatString: #,0
+		lineageTag: 2ee68365-03ac-456c-82d6-74f6361905d7
+
+	measure 'Taux de retard' =
+			
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( fact_expeditions ), fact_expeditions[is_late] = TRUE () ),
+			    COUNTROWS ( fact_expeditions )
+			)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 416ca07e-4d08-4154-b885-23c0438a7360
+
+	measure 'Délai moyen (jours)' = AVERAGE ( fact_expeditions[delivery_days] )
+		formatString: 0.0
+		lineageTag: 0661f287-d611-4b42-ae2f-5b38b78b23a9
+
+	measure 'Coût de port moyen' = AVERAGE ( fact_expeditions[shipping_charges] )
+		formatString: #,0.00
+		lineageTag: 5538aed4-5c17-4111-8da4-8a0f1ec46e26
+
+	column 'Colonne 1'
+		dataType: string
+		isHidden
+		lineageTag: faee3e22-9d0e-43d8-ae9d-68275a4f1355
+		summarizeBy: none
+		sourceColumn: Colonne 1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Mesures = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Colonne 1" = _t])
+				in
+				  Source
+
+	annotation PBI_ResultType = Table
+

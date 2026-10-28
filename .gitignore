@@ -8,6 +8,9 @@ source/
 
 # Power BI (un .pbix en mode Import contient une copie des données, sous licence CC BY-NC-SA)
 *.pbix
+# Projet PBIP : le cache contient une copie des données, localSettings est propre à la machine
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
 
 # Credentials GCP
 *.json.key

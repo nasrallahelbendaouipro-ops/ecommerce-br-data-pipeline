@@ -1,0 +1,110 @@
+table fact_expeditions
+	lineageTag: 2534dc5c-0175-4d4a-935a-ddad77e23d17
+
+	column order_id
+		dataType: string
+		lineageTag: d0a38e06-b2db-4880-8107-0e1115c50938
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: 74ea9461-e8ba-470a-b587-101f177d508b
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_id
+		dataType: string
+		lineageTag: 8d731ac5-3531-487a-8d04-dec9afc4a353
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_charges
+		dataType: double
+		lineageTag: 06dbd22a-0e8e-4b7b-b595-d0be93478334
+		summarizeBy: sum
+		sourceColumn: shipping_charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column purchase_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b31ca72d-c9af-41a7-8964-ff7677ab5c64
+		summarizeBy: none
+		sourceColumn: purchase_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column delivered_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a510be6e-8d23-4304-8de2-f4f4470cf5e3
+		summarizeBy: none
+		sourceColumn: delivered_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column estimated_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c8b88b86-bfe0-4cbf-8fda-1ccd7d255d4d
+		summarizeBy: none
+		sourceColumn: estimated_delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a07df0f-402d-488d-8007-22f66d1c354a
+		summarizeBy: sum
+		sourceColumn: delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_delay_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 56de6bdc-6ac0-405d-aeb7-237c07b200c8
+		summarizeBy: sum
+		sourceColumn: delivery_delay_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_late
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 576c0d32-37b9-451f-8f0d-8ba50d744830
+		summarizeBy: none
+		sourceColumn: is_late
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_expeditions = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = "sonorous-lyceum-506109-a5", UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null]),
+				  #"Navigation 1" = Source{[Name = "sonorous-lyceum-506109-a5"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "marts", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "fact_expeditions", Kind = "Table"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+
