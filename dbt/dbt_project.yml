@@ -6,10 +6,15 @@ model-paths: ["models"]
 
 vars:
   reference_date: '2018-09-03'
+  seuil_livraisons_vendeur: 30
+  seuil_taux_retard_vendeur: 0.15
+  seuil_livraisons_etat: 200
 
 models:
   ecommerce_br:
     staging:
+      +materialized: view
+    intermediate:
       +materialized: view
     marts:
       +materialized: table

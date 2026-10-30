@@ -23,11 +23,11 @@
                       "Entity": "_Mesures"
                     }
                   },
-                  "Property": "Ancienneté max (jours)"
+                  "Property": "Part à risque élevé ou modéré"
                 }
               },
-              "queryRef": "_Mesures.Ancienneté max (jours)",
-              "nativeQueryRef": "Ancienneté max (jours)"
+              "queryRef": "_Mesures.Part à risque élevé ou modéré",
+              "nativeQueryRef": "Part à risque élevé ou modéré"
             }
           ]
         }
@@ -81,7 +81,7 @@
             }
           },
           "selector": {
-            "metadata": "_Mesures.Ancienneté max (jours)"
+            "metadata": "_Mesures.Part à risque élevé ou modéré"
           }
         }
       ],
@@ -120,7 +120,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ancienneté maximale (jours)'"
+                  "Value": "'Part à risque (élevé ou modéré)'"
                 }
               }
             },

@@ -99,3 +99,19 @@ models:
               arguments:
                 to: ref('dim_date')
                 field: date_day
+      - name: niveau_risque
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['élevé', 'modéré', 'faible', 'indéterminé']
+      - name: niveau_risque_ordre
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+                quote: false
+      - name: is_vendeur_scorable
+        data_tests:
+          - not_null

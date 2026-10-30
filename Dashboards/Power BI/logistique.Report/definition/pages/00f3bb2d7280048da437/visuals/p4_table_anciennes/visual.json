@@ -6,7 +6,7 @@
     "y": 675,
     "z": 30,
     "height": 345,
-    "width": 1500,
+    "width": 1060,
     "tabOrder": 42
   },
   "visual": {
@@ -89,6 +89,36 @@
               "queryRef": "fact_commandes_en_cours.days_since_purchase",
               "nativeQueryRef": "days_since_purchase",
               "displayName": "Ancienneté (jours)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_commandes_en_cours"
+                    }
+                  },
+                  "Property": "niveau_risque"
+                }
+              },
+              "queryRef": "fact_commandes_en_cours.niveau_risque",
+              "nativeQueryRef": "niveau_risque",
+              "displayName": "Niveau de risque"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_commandes_en_cours"
+                    }
+                  },
+                  "Property": "taux_retard_etat"
+                }
+              },
+              "queryRef": "fact_commandes_en_cours.taux_retard_etat",
+              "nativeQueryRef": "taux_retard_etat",
+              "displayName": "Retard historique de l'état"
             }
           ]
         }

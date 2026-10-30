@@ -24,3 +24,11 @@ relationship 919cbde7-2845-a7b4-07c7-d6d0532ad056
 	fromColumn: fact_commandes_en_cours.customer_id
 	toColumn: dim_client.customer_id
 
+relationship b5305377-64fa-4aff-9e52-ceb1255f4974
+	fromColumn: fact_expeditions.seller_id
+	toColumn: int_taux_retard_vendeur.seller_id
+
+relationship 193b9213-a0ad-46df-886d-26c428eed19c
+	fromColumn: fact_commandes_en_cours.seller_id
+	toColumn: int_taux_retard_vendeur.seller_id
+

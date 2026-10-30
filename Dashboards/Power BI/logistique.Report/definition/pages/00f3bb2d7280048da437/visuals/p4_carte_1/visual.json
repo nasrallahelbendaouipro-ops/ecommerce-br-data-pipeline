@@ -23,11 +23,11 @@
                       "Entity": "_Mesures"
                     }
                   },
-                  "Property": "Ancienneté moyenne (jours)"
+                  "Property": "Commandes à risque élevé"
                 }
               },
-              "queryRef": "_Mesures.Ancienneté moyenne (jours)",
-              "nativeQueryRef": "Ancienneté moyenne (jours)"
+              "queryRef": "_Mesures.Commandes à risque élevé",
+              "nativeQueryRef": "Commandes à risque élevé"
             }
           ]
         }
@@ -67,7 +67,7 @@
             }
           },
           "selector": {
-            "metadata": "_Mesures.Ancienneté moyenne (jours)"
+            "metadata": "_Mesures.Commandes à risque élevé"
           }
         }
       ],
@@ -106,7 +106,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ancienneté moyenne (jours)'"
+                  "Value": "'Commandes à risque élevé'"
                 }
               }
             },
