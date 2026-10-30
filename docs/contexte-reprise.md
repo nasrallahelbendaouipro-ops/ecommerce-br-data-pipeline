@@ -48,8 +48,9 @@ Branche `main` = `origin/main`. Le travail Power BI (thème sombre, 4 pages, car
 - Profil dev : `C:\Users\Nasra\.dbt\profiles.yml` (oauth, dataset `staging`, `location: us-central1`). Hors dépôt.
 - Macro `generate_schema_name` : les modèles `marts` vont dans `marts`, le reste dans `staging`.
 - Marts : `shared/` (`dim_client`, `dim_produit`, `dim_date`), `logistique/` (`fact_expeditions`, `fact_commandes_en_cours`), `ventes/` (`fact_commandes`, `fact_ventes_categorie`).
-- Décisions clés (détail dans `docs/decisions.md`) : commande résolue = statut `delivered` **et** date de livraison non nulle ; `reference_date` fixe `2018-09-03` (variable dbt) ; calendrier 2016-01-01 à 2018-12-31 ; `dim_client` et `dim_produit` sans `load_type` ni `load_date` ; `payment_sequential` non repris.
-- Tests : 60 (57 réussis, **3 avertissements attendus** : 6 `delivered` sans date, 4 poids à 0, 3 paiements à 0 mensualité), 0 échec.
+- Intermédiaires : `models/intermediate/` (`int_taux_retard_vendeur`, `int_taux_retard_etat`), matérialisés en vues. Ils agrègent `fact_expeditions` pour fournir les taux de retard historiques par vendeur et par état. La macro `generate_schema_name` n'ayant pas été touchée, ils atterrissent dans le dataset `staging`.
+- Décisions clés (détail dans `docs/decisions.md`) : commande résolue = statut `delivered` **et** date de livraison non nulle ; `reference_date` fixe `2018-09-03` (variable dbt) ; calendrier 2016-01-01 à 2018-12-31 ; `dim_client` et `dim_produit` sans `load_type` ni `load_date` ; `payment_sequential` non repris ; niveau de risque des commandes en cours adossé aux taux de retard historiques (vendeur, état), avec une catégorie `indéterminé` quand aucun signal n'est exploitable, et seuils en variables dbt (`seuil_livraisons_vendeur`, `seuil_taux_retard_vendeur`, `seuil_livraisons_etat`).
+- Tests : 80 (77 réussis, **3 avertissements attendus** : 6 `delivered` sans date, 4 poids à 0, 3 paiements à 0 mensualité), 0 échec.
 
 ## 6. Airflow
 
@@ -63,11 +64,11 @@ Branche `main` = `origin/main`. Le travail Power BI (thème sombre, 4 pages, car
 
 Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers texte : `logistique.Report`, `logistique.SemanticModel`). Le `.pbix` voisin fait doublon et est ignoré par git.
 
-**Modèle** : tables `fact_expeditions`, `fact_commandes_en_cours`, `dim_date` (marquée table de dates), `dim_client` (avec colonne calculée `Pays` = "Brazil", catégories géographiques), `_Mesures`. Relations : `dim_date` vers `fact_expeditions[delivered_date]` (**active**), `[purchase_date]` et `[estimated_delivery_date]` (**inactives**, via `USERELATIONSHIP`), `dim_date` vers `fact_commandes_en_cours[purchase_date]` (active), `dim_client[customer_id]` vers les deux faits. Date/heure automatique désactivée. Import (pas DirectQuery), `BillingProject` renseigné.
+**Modèle** : tables `fact_expeditions`, `fact_commandes_en_cours`, `dim_date` (marquée table de dates), `dim_client` (avec colonne calculée `Pays` = "Brazil", catégories géographiques), `_Mesures`, `int_taux_retard_vendeur` (dimension vendeur, lue depuis le dataset `staging`). Relations : `dim_date` vers `fact_expeditions[delivered_date]` (**active**), `[purchase_date]` et `[estimated_delivery_date]` (**inactives**, via `USERELATIONSHIP`), `dim_date` vers `fact_commandes_en_cours[purchase_date]` (active), `dim_client[customer_id]` vers les deux faits, `int_taux_retard_vendeur[seller_id]` vers les deux faits. Date/heure automatique désactivée. Import (pas DirectQuery), `BillingProject` renseigné.
 
-**Mesures** (`_Mesures`) : Commandes livrées, Taux de retard, Délai moyen (jours), Coût de port moyen, Commandes en cours, Délai moyen par achat, Livrées par achat, Vendeurs actifs, Vendeurs à risque (≥ 30 livraisons et ≥ 15 % de retard, soit 40 vendeurs), Ancienneté moyenne (jours), Ancienneté max (jours), Date de référence.
+**Mesures** (`_Mesures`) : Commandes livrées, Taux de retard, Délai moyen (jours), Coût de port moyen, Commandes en cours, Délai moyen par achat, Livrées par achat, Vendeurs actifs, Vendeurs à risque (lit désormais le drapeau dbt `is_vendeur_a_risque` ; plus aucun seuil écrit en DAX ; 40 vendeurs sans segment actif), Ancienneté moyenne (jours), Ancienneté max (jours), Date de référence, Commandes à risque élevé, Commandes à risque modéré, Commandes à risque indéterminé, Part à risque élevé ou modéré.
 
-**Pages** (canevas 1920 × 1080) : Vue d'ensemble, Géographie (carte du Brésil au niveau ville, barres par état, tableau des villes), Vendeurs (nuage, tableau classé par taux de retard), Commandes en cours (colonnes par mois d'achat, barres par état, tableau des plus anciennes). Segments **synchronisés** sur les 4 pages : Période (`year_number` > `year_month`) et Localisation (`customer_state` > `customer_city`).
+**Pages** (canevas 1920 × 1080) : Vue d'ensemble, Géographie (carte du Brésil au niveau ville, barres par état, tableau des villes), Vendeurs (nuage, tableau classé par taux de retard), Commandes en cours (KPI « à risque élevé » et « part à risque », colonnes par mois d'achat, barres par état, répartition par niveau de risque, tableau des plus anciennes avec niveau de risque et taux de retard de l'état). Segments **synchronisés** sur les 4 pages : Période (`year_number` > `year_month`) et Localisation (`customer_state` > `customer_city`).
 
 **Charte** : thème sombre « E-commerce Brasil » (`Dashboards/Power BI/theme/ecommerce-brasil.json`, copie enregistrée dans le rapport), fond dégradé `bg_bresil.png`, cartes en verre dépoli, titres jaunes, axes et titres de graphiques en blanc (taille 22, sous-titre masqué), KPI avec titre et nom de mesure masqué, filtres de volume de visuel (500 livraisons par mois, 100 par état, 200 par ville, 30 par vendeur). Palette : vert `#2FD063`, jaune `#FFC800`, bleu `#4D8DFF`, orange `#FF7A45`, marine `#002776`.
 
@@ -81,7 +82,7 @@ Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers text
 ## 8. État git à reprendre
 
 - Tout est commité et poussé. Avant de commiter du Power BI : `git add -n Dashboards` pour contrôler. Doivent rester ignorés : `.pbi/cache.abf`, `.pbi/localSettings.json`, `*.pbix`, `airflow/.env`, `airflow/secrets/`.
-- À ajouter plus tard : les décisions Power BI dans `docs/decisions.md` (thème sombre, filtres de volume, seuil « vendeur à risque »).
+- À ajouter plus tard : les décisions Power BI dans `docs/decisions.md` (thème sombre, filtres de volume). Le critère « vendeur à risque » et le niveau de risque des commandes en cours y sont déjà documentés.
 
 ## 9. Reste à faire
 
@@ -91,7 +92,6 @@ Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers text
 
 ## 10. Points ouverts
 
-- « Commandes à risque » (page 4) : avec la date de référence fixe, 99,3 % des commandes en cours dépassent le délai moyen : critère peu discriminant. Alternative à décider (tranches d'ancienneté, ou référence par lot).
 - Dégradé de couleur de la carte : à régler dans Power BI (Format > Couleurs > fx) si le rendu par défaut ne convient pas.
 - Barres par état : un filtre « N premiers » reste possible si la liste est trop longue.
 

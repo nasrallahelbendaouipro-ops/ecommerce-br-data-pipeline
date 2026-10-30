@@ -84,6 +84,72 @@ table fact_commandes_en_cours
 
 		annotation SummarizationSetBy = Automatic
 
+	column taux_retard_vendeur
+		dataType: double
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: d526fb1b-7d83-4402-922a-a93193f1f2fc
+		summarizeBy: none
+		sourceColumn: taux_retard_vendeur
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_vendeur_scorable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b6ef5e65-f79f-4a02-9e47-11d5309f3e89
+		summarizeBy: none
+		sourceColumn: is_vendeur_scorable
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_vendeur_a_risque
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 07eb2584-7a90-4e84-826a-ca5b17c31892
+		summarizeBy: none
+		sourceColumn: is_vendeur_a_risque
+
+		annotation SummarizationSetBy = Automatic
+
+	column taux_retard_etat
+		dataType: double
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: 4afc9760-5368-4a4c-9e80-ddf219c24cdf
+		summarizeBy: none
+		sourceColumn: taux_retard_etat
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_etat_a_risque
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 34ec282a-55ab-488d-8594-79142e70f158
+		summarizeBy: none
+		sourceColumn: is_etat_a_risque
+
+		annotation SummarizationSetBy = Automatic
+
+	column niveau_risque
+		dataType: string
+		lineageTag: 670440bf-8524-4e9b-ae57-0cce1fece3da
+		summarizeBy: none
+		sourceColumn: niveau_risque
+		sortByColumn: niveau_risque_ordre
+
+		annotation SummarizationSetBy = Automatic
+
+	column niveau_risque_ordre
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b26f380d-25f9-4a56-bb23-4ed40c9a0ad5
+		summarizeBy: none
+		sourceColumn: niveau_risque_ordre
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_commandes_en_cours = m
 		mode: import
 		source =

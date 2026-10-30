@@ -1,0 +1,69 @@
+table int_taux_retard_vendeur
+	lineageTag: c4665b0d-503b-4ce7-b1e4-74d574064152
+
+	column seller_id
+		dataType: string
+		lineageTag: 57266a7c-4837-495a-a6df-3c2450a29954
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_livraisons
+		dataType: int64
+		formatString: #,0
+		lineageTag: f2bd0fc4-1682-4ac8-8bb9-89667e4297eb
+		summarizeBy: sum
+		sourceColumn: nb_livraisons
+
+		annotation SummarizationSetBy = Automatic
+
+	column nb_retards
+		dataType: int64
+		formatString: #,0
+		lineageTag: c0f40ca6-3642-486c-98b3-0136e27086aa
+		summarizeBy: sum
+		sourceColumn: nb_retards
+
+		annotation SummarizationSetBy = Automatic
+
+	column taux_retard
+		dataType: double
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: 8d2fd078-bf16-43d5-be91-0891ed0eb067
+		summarizeBy: none
+		sourceColumn: taux_retard
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_scorable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f3c99aef-687a-4ef0-a9df-e1f9f433b0ca
+		summarizeBy: none
+		sourceColumn: is_scorable
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_vendeur_a_risque
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 51b1e9d8-cdc3-4970-979b-4ade85ed95a5
+		summarizeBy: none
+		sourceColumn: is_vendeur_a_risque
+
+		annotation SummarizationSetBy = Automatic
+
+	partition int_taux_retard_vendeur = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = "sonorous-lyceum-506109-a5", UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null]),
+				  #"Navigation 1" = Source{[Name = "sonorous-lyceum-506109-a5"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "staging", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "int_taux_retard_vendeur", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

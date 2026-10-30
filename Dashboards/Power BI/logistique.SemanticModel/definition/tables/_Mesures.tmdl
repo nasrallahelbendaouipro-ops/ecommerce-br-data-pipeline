@@ -23,8 +23,10 @@ table _Mesures
 		lineageTag: 5538aed4-5c17-4111-8da4-8a0f1ec46e26
 
 	measure 'Commandes en cours' = COUNTROWS ( fact_commandes_en_cours )
-		formatString: #,0
+		formatString: 0
 		lineageTag: 7c1d3f52-8a64-4be0-9d27-31e5a0c4b6f1
+
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'Délai moyen par achat' = CALCULATE ( AVERAGE ( fact_expeditions[delivery_days] ), USERELATIONSHIP ( fact_expeditions[purchase_date], dim_date[date_day] ) )
 		formatString: 0.0
@@ -38,7 +40,7 @@ table _Mesures
 		formatString: #,0
 		lineageTag: 4f6b2d18-93ae-4c75-b0d1-7a2e58c3f9b6
 
-	measure 'Vendeurs à risque' = COUNTROWS ( FILTER ( VALUES ( fact_expeditions[seller_id] ), [Commandes livrées] >= 30 && [Taux de retard] >= 0.15 ) )
+	measure 'Vendeurs à risque' = CALCULATE ( DISTINCTCOUNT ( fact_expeditions[seller_id] ), int_taux_retard_vendeur[is_vendeur_a_risque] = TRUE () )
 		formatString: #,0
 		lineageTag: 8d1e7a43-5c29-4b86-a3f0-2b9c64d7e150
 
@@ -53,6 +55,22 @@ table _Mesures
 	measure 'Date de référence' = MAX ( fact_commandes_en_cours[reference_date] )
 		formatString: dd/mm/yyyy
 		lineageTag: a7e24c06-8b13-4d95-b5f2-9c1d70e8a346
+
+	measure 'Commandes à risque élevé' = CALCULATE ( COUNTROWS ( fact_commandes_en_cours ), fact_commandes_en_cours[niveau_risque] = "élevé" )
+		formatString: #,0
+		lineageTag: 1ef110a5-0f74-481f-b84b-58c995867f50
+
+	measure 'Commandes à risque modéré' = CALCULATE ( COUNTROWS ( fact_commandes_en_cours ), fact_commandes_en_cours[niveau_risque] = "modéré" )
+		formatString: #,0
+		lineageTag: 0c13c24d-48c4-4797-be9b-405bde3dcfd3
+
+	measure 'Commandes à risque indéterminé' = CALCULATE ( COUNTROWS ( fact_commandes_en_cours ), fact_commandes_en_cours[niveau_risque] = "indéterminé" )
+		formatString: #,0
+		lineageTag: bc8fa750-65ea-47b4-81f1-2cfdebe00665
+
+	measure 'Part à risque élevé ou modéré' = DIVIDE ( [Commandes à risque élevé] + [Commandes à risque modéré], [Commandes en cours] )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: c3ef8554-675c-4a74-9a84-06c19c20203f
 
 	column 'Colonne 1'
 		dataType: string

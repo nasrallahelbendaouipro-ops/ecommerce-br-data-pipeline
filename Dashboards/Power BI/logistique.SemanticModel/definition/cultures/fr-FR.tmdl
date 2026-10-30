@@ -193,6 +193,48 @@ cultureInfo fr-FR
 			          }
 			        }
 			      ]
+			    },
+			    "fact_commandes_en_cours.niveau_risque": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_commandes_en_cours",
+			          "ConceptualProperty": "niveau_risque"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Niveau de risque": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_commandes_en_cours.taux_retard_etat": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_commandes_en_cours",
+			          "ConceptualProperty": "taux_retard_etat"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Retard historique de l'état": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}
