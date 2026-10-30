@@ -115,3 +115,30 @@ models:
       - name: is_vendeur_scorable
         data_tests:
           - not_null
+
+  - name: fact_ventes_paiement
+    columns:
+      - name: year_month
+        data_tests:
+          - not_null
+      - name: customer_state
+        data_tests:
+          - not_null
+      - name: nb_orders
+        data_tests:
+          - not_null
+      - name: nb_orders_statut_connu
+        data_tests:
+          - not_null
+
+  - name: fact_ventes_categorie
+    columns:
+      - name: year_month
+        data_tests:
+          - not_null
+      - name: nb_orders
+        data_tests:
+          - not_null
+      - name: nb_orders_statut_connu
+        data_tests:
+          - not_null
