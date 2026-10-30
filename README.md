@@ -30,7 +30,7 @@ Le test set ne contient ni `order_status`, ni date de livraison réelle, ni date
 - [x] 05 · dbt — marts
 - [x] 06 · Tests & qualité
 - [x] 07 · Orchestration Airflow
-- [ ] 08 · Dashboard Power BI — Logistique & Livraison
+- [x] 08 · Dashboard Power BI — Logistique & Livraison
 - [ ] 09 · Dashboard Tableau — Ventes & Produits
 - [ ] 10 · Documentation & portfolio
 

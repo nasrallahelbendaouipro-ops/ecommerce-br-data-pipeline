@@ -21,11 +21,11 @@
 | 00 Cadrage, 01 Socle GCP, 02 Ingestion initiale (train), 03 Ingestion incrémentale (test) | Terminées |
 | 04 dbt staging, 05 dbt marts, 06 Tests et qualité | Terminées, commitées et poussées |
 | 07 Orchestration Airflow | Terminée, commitée et poussée (`35b907f`). Les 24 runs ont réussi |
-| 08 Dashboard Power BI (logistique) | **Construit, non commité**. Les 4 pages existent ; je les ai retouchées. README : case 08 pas encore cochée |
+| 08 Dashboard Power BI (logistique) | Terminée, commitée et poussée (`a18c327`). 4 pages, thème sombre, carte du Brésil. README : case 08 cochée |
 | 09 Dashboard Tableau (ventes) | **À faire** |
 | 10 Documentation et portfolio | **À faire** |
 
-Dernier commit poussé : `6ea1d79` (phase 08, premier jet). Branche `main` = `origin/main`. Tout le travail Power BI depuis (thème sombre, 3 pages, carte, mesures, fond) est **non commité** : voir §8.
+Branche `main` = `origin/main`. Le travail Power BI (thème sombre, 4 pages, carte, mesures, fond) est commité et poussé (`a18c327`).
 
 ## 3. Données et licence
 
@@ -80,15 +80,14 @@ Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers text
 
 ## 8. État git à reprendre
 
-- **Non commité** : tout `Dashboards/` mis à jour (rapport, modèle, thème, fond `bg_bresil.png`), plus ce fichier. Contrôler avant de commiter : `git add -n Dashboards`. Doivent rester ignorés : `.pbi/cache.abf`, `.pbi/localSettings.json`, `*.pbix`, `airflow/.env`, `airflow/secrets/`.
-- Commit à prévoir, par exemple : « Phase 08 : dashboard Power BI logistique (4 pages, thème sombre, carte) », puis cocher la phase 08 dans `README.md`, ajouter les décisions Power BI à `docs/decisions.md`, et pousser **si je le demande**.
+- Tout est commité et poussé. Avant de commiter du Power BI : `git add -n Dashboards` pour contrôler. Doivent rester ignorés : `.pbi/cache.abf`, `.pbi/localSettings.json`, `*.pbix`, `airflow/.env`, `airflow/secrets/`.
+- À ajouter plus tard : les décisions Power BI dans `docs/decisions.md` (thème sombre, filtres de volume, seuil « vendeur à risque »).
 
 ## 9. Reste à faire
 
-1. Valider les 4 pages Power BI (rendu, carte), commiter la phase 08.
-2. **Phase 09, Tableau Public** (LOD, pas de DAX) : structure proposée dans `CLAUDE.md` (vue d'ensemble, catégories et produits, paiement et segmentation, statuts et annulations), alimentée par `fact_commandes`, `fact_ventes_categorie`, `dim_produit`, `dim_date`, `dim_client`. À confirmer avec moi avant de commencer. Tableau Public lit un fichier ou un extrait : attention à la licence des données (extrait agrégé, attribution).
-3. **Phase 10** : README final (architecture, choix du flux incrémental, remplacement de DataCo), captures d'écran des dashboards avec attribution, vérification que le dépôt ne contient aucune donnée.
-4. Nettoyage de fin de projet : arrêter Airflow (`docker compose down`), supprimer la clé du compte de service, vérifier le budget GCP.
+1. **Phase 09, Tableau Public** (LOD, pas de DAX) : structure proposée dans `CLAUDE.md` (vue d'ensemble, catégories et produits, paiement et segmentation, statuts et annulations), alimentée par `fact_commandes`, `fact_ventes_categorie`, `dim_produit`, `dim_date`, `dim_client`. À confirmer avec moi avant de commencer. Tableau Public lit un fichier ou un extrait : attention à la licence des données (extrait agrégé, attribution).
+2. **Phase 10** : README final (architecture, choix du flux incrémental, remplacement de DataCo), captures d'écran des dashboards avec attribution, vérification que le dépôt ne contient aucune donnée.
+3. Nettoyage de fin de projet : arrêter Airflow (`docker compose down`), supprimer la clé du compte de service, vérifier le budget GCP.
 
 ## 10. Points ouverts
 
