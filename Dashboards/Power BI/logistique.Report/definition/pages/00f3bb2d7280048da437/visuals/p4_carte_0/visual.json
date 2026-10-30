@@ -27,8 +27,7 @@
                 }
               },
               "queryRef": "_Mesures.Commandes en cours",
-              "nativeQueryRef": "Commandes en cours",
-              "format": "0"
+              "nativeQueryRef": "Commandes en cours"
             }
           ]
         }
