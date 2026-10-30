@@ -6,6 +6,10 @@ data/
 lots/
 source/
 
+# Exports pour Tableau Public : ce sont des agrégats, mais ce sont des données.
+# Le classeur publié porte l'attribution ; le dépôt ne contient aucun export.
+exports/
+
 # Power BI (un .pbix en mode Import contient une copie des données, sous licence CC BY-NC-SA)
 *.pbix
 # Projet PBIP : le cache contient une copie des données, localSettings est propre à la machine
