@@ -28,8 +28,16 @@ table dim_client
 	column customer_state
 		dataType: string
 		lineageTag: 1c1a3942-1b4a-49c7-b6b7-359dec87d786
+		dataCategory: StateOrProvince
 		summarizeBy: none
 		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pays = "Brazil"
+		lineageTag: d2b4f6a8-1c3e-4a57-9b08-e6f1a3c5d7b9
+		dataCategory: Country
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 

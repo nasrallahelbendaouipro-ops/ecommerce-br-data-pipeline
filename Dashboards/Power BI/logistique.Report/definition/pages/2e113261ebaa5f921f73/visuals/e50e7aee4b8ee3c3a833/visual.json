@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "e50e7aee4b8ee3c3a833",
   "position": {
-    "x": 771.87661245092534,
-    "y": 99.930454290521581,
-    "z": 2,
-    "height": 151.61862030286034,
-    "width": 254.99495232753785,
-    "tabOrder": 2
+    "x": 1002,
+    "y": 132,
+    "z": 30,
+    "height": 156,
+    "width": 285,
+    "tabOrder": 9
   },
   "visual": {
     "visualType": "cardVisual",
@@ -51,14 +51,73 @@
         "isDefaultSort": true
       }
     },
-    "visualContainerObjects": {
-      "title": [
+    "objects": {
+      "label": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Mesures.Commandes livrées"
+          }
+        }
+      ],
+      "value": [
+        {
+          "properties": {
+            "horizontalAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "-1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Mesures.Commandes livrées"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Délai moyen (jours)'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
@@ -69,10 +128,29 @@
                 }
               }
             },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'15'"
+                  "Value": "22D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             }
@@ -160,14 +238,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
                 }
               }
             },
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "90D"
                 }
               }
             }
@@ -214,7 +303,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -223,7 +312,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E6E6E6'"
+                      "Value": "'#3E5A8F'"
                     }
                   }
                 }
@@ -232,7 +321,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "14D"
                 }
               }
             },
