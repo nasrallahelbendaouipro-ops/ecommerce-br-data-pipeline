@@ -23,10 +23,8 @@ table _Mesures
 		lineageTag: 5538aed4-5c17-4111-8da4-8a0f1ec46e26
 
 	measure 'Commandes en cours' = COUNTROWS ( fact_commandes_en_cours )
-		formatString: 0
+		formatString: #,0
 		lineageTag: 7c1d3f52-8a64-4be0-9d27-31e5a0c4b6f1
-
-		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure 'Délai moyen par achat' = CALCULATE ( AVERAGE ( fact_expeditions[delivery_days] ), USERELATIONSHIP ( fact_expeditions[purchase_date], dim_date[date_day] ) )
 		formatString: 0.0
