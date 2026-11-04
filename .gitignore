@@ -10,6 +10,12 @@ source/
 # Le classeur publié porte l'attribution ; le dépôt ne contient aucun export.
 exports/
 
+# Tableau : le .twb ne contient que la définition et peut être versionné ;
+# les .twbx embarquent les données, et les .twbr sont des verrous temporaires.
+*.twbx
+*.twbr
+~*.twb*
+
 # Power BI (un .pbix en mode Import contient une copie des données, sous licence CC BY-NC-SA)
 *.pbix
 # Projet PBIP : le cache contient une copie des données, localSettings est propre à la machine

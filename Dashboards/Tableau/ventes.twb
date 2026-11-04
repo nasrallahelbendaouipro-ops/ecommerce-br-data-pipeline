@@ -1,0 +1,688 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20262.26.0708.1337                               -->
+<workbook _.fcp.WorkbookFingerprinting.true...author-id='c55b7dd9e004f481f00a9cf24542c6e5c29b0331954048409b789e3915455471' _.fcp.WorkbookFingerprinting.true...creator-author-id='c55b7dd9e004f481f00a9cf24542c6e5c29b0331954048409b789e3915455471' _.fcp.WorkbookFingerprinting.true...creator-license-type='free' _.fcp.WorkbookFingerprinting.true...creator-machine-id='dc1e5bfd35d61e08f38b031d733f03a905e1900097bd0ce4b3ac2cdfa2be16f0' _.fcp.WorkbookFingerprinting.true...license-type='free' _.fcp.WorkbookFingerprinting.true...machine-id='dc1e5bfd35d61e08f38b031d733f03a905e1900097bd0ce4b3ac2cdfa2be16f0' original-version='18.1' source-build='2026.2.1 (20262.26.0708.1337)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AnimationOnByDefault />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+    <_.fcp.WorkbookFingerprinting.true...WorkbookFingerprinting />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource hasconnection='false' inline='true' name='Parameters' version='18.1'>
+      <aliases enabled='yes' />
+      <column caption='Année' datatype='string' name='[Paramètre 1473408854364161]' param-domain-type='list' role='measure' type='nominal' value='&quot;Toutes&quot;'>
+        <calculation class='tableau' formula='&quot;Toutes&quot;' />
+        <members>
+          <member value='&quot;Toutes&quot;' />
+          <member value='&quot;2016&quot;' />
+          <member value='&quot;2017&quot;' />
+          <member value='&quot;2018&quot;' />
+        </members>
+      </column>
+    </datasource>
+    <datasource caption='fact_ventes_categorie' inline='true' name='federated.031hxyk128uqvt1cfaucy0l2p0hk' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='fact_ventes_categorie' name='textscan.1a826wg0xnuh1d1e8jy2419h6n0d'>
+            <connection class='textscan' directory='C:/Users/Nasra/Desktop/Projects/Industrial Data Project/exports' filename='fact_ventes_categorie.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.1a826wg0xnuh1d1e8jy2419h6n0d' name='fact_ventes_categorie.csv' table='[fact_ventes_categorie#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='fr_FR' separator=','>
+            <column datatype='string' name='product_category_name' ordinal='0' />
+            <column datatype='string' name='year_month' ordinal='1' />
+            <column datatype='integer' name='year_number' ordinal='2' />
+            <column datatype='integer' name='month_number' ordinal='3' />
+            <column datatype='integer' name='nb_orders' ordinal='4' />
+            <column datatype='integer' name='nb_orders_statut_connu' ordinal='5' />
+            <column datatype='integer' name='nb_orders_canceled' ordinal='6' />
+            <column datatype='real' name='total_price' ordinal='7' />
+            <column datatype='real' name='total_payment_value' ordinal='8' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;fr_FR&quot;</attribute>
+              <attribute datatype='string' name='currency'>&quot;€&quot;</attribute>
+              <attribute datatype='string' name='decimal-char'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;fr_FR&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+              <attribute datatype='string' name='thousands-char'>&quot; &quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>product_category_name</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[product_category_name]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>product_category_name</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LFR_RFR' />
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>year_month</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[year_month]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>year_month</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LFR_RFR' />
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>year_number</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[year_number]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>year_number</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>month_number</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[month_number]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>month_number</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>nb_orders</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[nb_orders]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>nb_orders</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>nb_orders_statut_connu</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[nb_orders_statut_connu]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>nb_orders_statut_connu</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>nb_orders_canceled</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[nb_orders_canceled]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>nb_orders_canceled</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>total_price</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[total_price]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>total_price</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>total_payment_value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[total_payment_value]</local-name>
+            <parent-name>[fact_ventes_categorie.csv]</parent-name>
+            <remote-alias>total_payment_value</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Filtre période' datatype='boolean' name='[Calculation_1473408857202693]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
+      </column>
+      <column caption='Catégorie affichée' datatype='string' name='[Calculation_1473408857305094]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='IF ISNULL([product_category_name]) OR TRIM([product_category_name]) = &quot;&quot; THEN &quot;Catégorie inconnue&quot; ELSE [product_category_name] END' />
+      </column>
+      <column caption='Panier moyen' datatype='real' name='[Calculation_1473408857407495]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='SUM([total_price]) / SUM([nb_orders])' />
+      </column>
+      <column caption='Taux d&apos;annulation' datatype='real' name='[Calculation_1473408857505800]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='SUM([nb_orders_canceled]) / SUM([nb_orders_statut_connu])' />
+      </column>
+      <column caption='Mois' datatype='date' name='[Calculation_1473408857972745]' role='dimension' type='ordinal'>
+        <calculation class='tableau' formula='MAKEDATE([year_number], [month_number], 1)' />
+      </column>
+      <column caption='fact_ventes_categorie.csv' datatype='table' name='[__tableau_internal_object_id__].[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]' role='measure' type='quantitative' />
+      <column aggregation='Sum' datatype='integer' name='[month_number]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;France&quot;' />
+      </semantic-values>
+      <date-options start-of-week='monday' />
+      <datasource-dependencies datasource='Parameters'>
+        <column caption='Année' datatype='string' name='[Paramètre 1473408854364161]' param-domain-type='list' role='measure' type='nominal' value='&quot;Toutes&quot;'>
+          <calculation class='tableau' formula='&quot;Toutes&quot;' />
+        </column>
+      </datasource-dependencies>
+      <object-graph>
+        <objects>
+          <object caption='fact_ventes_categorie.csv' id='fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399'>
+            <properties context=''>
+              <relation connection='textscan.1a826wg0xnuh1d1e8jy2419h6n0d' name='fact_ventes_categorie.csv' table='[fact_ventes_categorie#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='fr_FR' separator=','>
+                  <column datatype='string' name='product_category_name' ordinal='0' />
+                  <column datatype='string' name='year_month' ordinal='1' />
+                  <column datatype='integer' name='year_number' ordinal='2' />
+                  <column datatype='integer' name='month_number' ordinal='3' />
+                  <column datatype='integer' name='nb_orders' ordinal='4' />
+                  <column datatype='integer' name='nb_orders_statut_connu' ordinal='5' />
+                  <column datatype='integer' name='nb_orders_canceled' ordinal='6' />
+                  <column datatype='real' name='total_price' ordinal='7' />
+                  <column datatype='real' name='total_payment_value' ordinal='8' />
+                </columns>
+              </relation>
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+    <datasource caption='fact_ventes_paiement' inline='true' name='federated.0zfv7x116edgm81ffm2jn1m4gobj' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='fact_ventes_paiement' name='textscan.0biqu581drme1o1biohvf1j892xw'>
+            <connection class='textscan' directory='C:/Users/Nasra/Desktop/Projects/Industrial Data Project/exports' filename='fact_ventes_paiement.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.0biqu581drme1o1biohvf1j892xw' name='fact_ventes_paiement.csv' table='[fact_ventes_paiement#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='fr_FR'>
+            <column datatype='string' name='year_month' ordinal='0' />
+            <column datatype='integer' name='year_number' ordinal='1' />
+            <column datatype='integer' name='month_number' ordinal='2' />
+            <column datatype='string' name='customer_state' ordinal='3' />
+            <column datatype='string' name='payment_type' ordinal='4' />
+            <column datatype='integer' name='payment_installments' ordinal='5' />
+            <column datatype='integer' name='nb_orders' ordinal='6' />
+            <column datatype='integer' name='nb_orders_statut_connu' ordinal='7' />
+            <column datatype='integer' name='nb_orders_canceled' ordinal='8' />
+            <column datatype='real' name='total_price' ordinal='9' />
+            <column datatype='real' name='total_payment_value' ordinal='10' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;fr_FR&quot;</attribute>
+              <attribute datatype='string' name='currency'>&quot;€&quot;</attribute>
+              <attribute datatype='string' name='decimal-char'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;fr_FR&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+              <attribute datatype='string' name='thousands-char'>&quot; &quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>year_month</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[year_month]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>year_month</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LFR_RFR' />
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>year_number</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[year_number]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>year_number</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>month_number</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[month_number]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>month_number</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>customer_state</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[customer_state]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>customer_state</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LFR_RFR' />
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>payment_type</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[payment_type]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>payment_type</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LFR_RFR' />
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>payment_installments</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[payment_installments]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>payment_installments</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>nb_orders</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[nb_orders]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>nb_orders</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>nb_orders_statut_connu</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[nb_orders_statut_connu]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>nb_orders_statut_connu</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>nb_orders_canceled</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[nb_orders_canceled]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>nb_orders_canceled</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>total_price</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[total_price]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>total_price</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>total_payment_value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[total_payment_value]</local-name>
+            <parent-name>[fact_ventes_paiement.csv]</parent-name>
+            <remote-alias>total_payment_value</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Filtre période' datatype='boolean' name='[Calculation_1473408855707650]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
+      </column>
+      <column caption='Panier moyen' datatype='real' name='[Calculation_1473408855908355]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='SUM([total_price]) / SUM([nb_orders])' />
+      </column>
+      <column caption='Taux d&apos;annulation' datatype='real' name='[Calculation_1473408856039428]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='SUM([nb_orders_canceled]) / SUM([nb_orders_statut_connu])' />
+      </column>
+      <column caption='fact_ventes_paiement.csv' datatype='table' name='[__tableau_internal_object_id__].[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]' role='measure' type='quantitative' />
+      <column caption='Customer State' datatype='string' name='[customer_state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='Month Number' datatype='integer' name='[month_number]' role='dimension' type='quantitative' />
+      <column caption='Nb Orders' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' />
+      <column caption='Nb Orders Canceled' datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' />
+      <column caption='Nb Orders Statut Connu' datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' />
+      <column aggregation='Sum' caption='Payment Installments' datatype='integer' name='[payment_installments]' role='dimension' type='ordinal' />
+      <column caption='Payment Type' datatype='string' name='[payment_type]' role='dimension' type='nominal' />
+      <column caption='Total Payment Value' datatype='real' name='[total_payment_value]' role='measure' type='quantitative' />
+      <column caption='Total Price' datatype='real' name='[total_price]' role='measure' type='quantitative' />
+      <column caption='Year Month' datatype='string' name='[year_month]' role='dimension' type='nominal' />
+      <column caption='Year Number' datatype='integer' name='[year_number]' role='dimension' type='quantitative' />
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;France&quot;' />
+      </semantic-values>
+      <date-options start-of-week='monday' />
+      <datasource-dependencies datasource='Parameters'>
+        <column caption='Année' datatype='string' name='[Paramètre 1473408854364161]' param-domain-type='list' role='measure' type='nominal' value='&quot;Toutes&quot;'>
+          <calculation class='tableau' formula='&quot;Toutes&quot;' />
+        </column>
+      </datasource-dependencies>
+      <object-graph>
+        <objects>
+          <object caption='fact_ventes_paiement.csv' id='fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3'>
+            <properties context=''>
+              <relation connection='textscan.0biqu581drme1o1biohvf1j892xw' name='fact_ventes_paiement.csv' table='[fact_ventes_paiement#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='fr_FR'>
+                  <column datatype='string' name='year_month' ordinal='0' />
+                  <column datatype='integer' name='year_number' ordinal='1' />
+                  <column datatype='integer' name='month_number' ordinal='2' />
+                  <column datatype='string' name='customer_state' ordinal='3' />
+                  <column datatype='string' name='payment_type' ordinal='4' />
+                  <column datatype='integer' name='payment_installments' ordinal='5' />
+                  <column datatype='integer' name='nb_orders' ordinal='6' />
+                  <column datatype='integer' name='nb_orders_statut_connu' ordinal='7' />
+                  <column datatype='integer' name='nb_orders_canceled' ordinal='8' />
+                  <column datatype='real' name='total_price' ordinal='9' />
+                  <column datatype='real' name='total_payment_value' ordinal='10' />
+                </columns>
+              </relation>
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Tendance mensuelle'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='fact_ventes_categorie' name='federated.031hxyk128uqvt1cfaucy0l2p0hk' />
+            <datasource caption='Paramètres' name='Parameters' />
+          </datasources>
+          <datasource-dependencies datasource='Parameters'>
+            <column caption='Année' datatype='string' name='[Paramètre 1473408854364161]' param-domain-type='list' role='measure' type='nominal' value='&quot;Toutes&quot;'>
+              <calculation class='tableau' formula='&quot;Toutes&quot;' />
+            </column>
+          </datasource-dependencies>
+          <datasource-dependencies datasource='federated.031hxyk128uqvt1cfaucy0l2p0hk'>
+            <column caption='Filtre période' datatype='boolean' name='[Calculation_1473408857202693]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
+            </column>
+            <column caption='Mois' datatype='date' name='[Calculation_1473408857972745]' role='dimension' type='ordinal'>
+              <calculation class='tableau' formula='MAKEDATE([year_number], [month_number], 1)' />
+            </column>
+            <column aggregation='Sum' datatype='integer' name='[month_number]' role='dimension' type='ordinal' />
+            <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
+            <column-instance column='[total_price]' derivation='Sum' name='[sum:total_price:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1473408857972745]' derivation='Month-Trunc' name='[tmn:Calculation_1473408857972745:qk]' pivot='key' type='quantitative' />
+            <column datatype='real' name='[total_price]' role='measure' type='quantitative' />
+            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
+            <groupfilter function='member' level='[none:Calculation_1473408857202693:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.031hxyk128uqvt1cfaucy0l2p0hk].[sum:total_price:qk]</rows>
+        <cols>[federated.031hxyk128uqvt1cfaucy0l2p0hk].[tmn:Calculation_1473408857972745:qk]</cols>
+      </table>
+      <simple-id uuid='{FCFB746C-CBA6-43A7-8D7D-70C9EB680AF2}' />
+    </worksheet>
+  </worksheets>
+  <windows saved-dpi-scale-factor='1.25' source-height='63'>
+    <window class='worksheet' maximized='true' name='Tendance mensuelle'>
+      <cards>
+        <edge name='left'>
+          <strip size='169'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]</field>
+          </color-one-way>
+        </highlight>
+        <default-map-tool-selection tool='2' />
+      </viewpoint>
+      <simple-id uuid='{16BECD1C-D250-4356-8FDE-FD6D25D36826}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Tendance mensuelle' width='192'>
+      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
+      rvLhKYgAAAAASUVORK5CYII=
+    </thumbnail>
+  </thumbnails>
+</workbook>
