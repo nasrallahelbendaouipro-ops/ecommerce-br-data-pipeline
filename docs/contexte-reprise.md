@@ -1,6 +1,6 @@
 # Contexte de reprise : pipeline e-commerce brésilien
 
-> État au 30/10/2026. Fichier de passation pour une nouvelle session. À lire avec `CLAUDE.md` (règles du projet) avant toute action.
+> État au 04/11/2026. Fichier de passation pour une nouvelle session. À lire avec `CLAUDE.md` (règles du projet) avant toute action.
 > Ne contient aucun secret. La clé GCP n'est jamais dans le dépôt.
 
 ## 1. Façon de travailler avec moi
@@ -22,15 +22,16 @@
 | 04 dbt staging, 05 dbt marts, 06 Tests et qualité | Terminées, commitées et poussées |
 | 07 Orchestration Airflow | Terminée, commitée et poussée (`35b907f`). Les 24 runs ont réussi |
 | 08 Dashboard Power BI (logistique) | Terminée, commitée et poussée (`a18c327`). 4 pages, thème sombre, carte du Brésil. README : case 08 cochée |
-| 09 Dashboard Tableau (ventes) | **À faire** |
+| 09 Dashboard Tableau (ventes) | **Couche données terminée**, commitée et poussée (`d1265e5`, `8703f77`) : 2 agrégats, 9 tests, script d'export, attribution. **Classeur Tableau à construire** |
 | 10 Documentation et portfolio | **À faire** |
 
-Branche `main` = `origin/main`. Le travail Power BI (thème sombre, 4 pages, carte, mesures, fond) est commité et poussé (`a18c327`).
+Branche `main` = `origin/main`, arbre propre. Derniers commits : `8a0812e` (niveau de risque des commandes en cours, dbt et Power BI), `ceceb7c` (format du KPI et cadrage de la carte rétablis après une réécriture par Desktop), `d1265e5` (agrégats Tableau et dénominateur des taux ventes), `8703f77` (script d'export et attribution).
 
 ## 3. Données et licence
 
 - Source : Kaggle `bytadit/ecommerce-order-dataset`, licence **CC BY-NC-SA 4.0** (attribution, non commercial, partage dans les mêmes conditions). Mentionnée dans `README.md`, `docs/decisions.md` et `CLAUDE.md`.
-- **Ne jamais publier** : les CSV, les `.pbix`, le cache Power BI (`.pbi/cache.abf`), ni d'export des marts. Code et captures d'écran avec attribution uniquement. Tout cela est dans `.gitignore`.
+- **Ne jamais publier** : les CSV sources, les `.pbix`, le cache Power BI (`.pbi/cache.abf`), ni aucun export **au grain commande**. Tout cela est dans `.gitignore`.
+- **Exception tranchée en phase 09** : les **agrégats** peuvent être exportés et publiés. Tableau Public met son extrait de données en ligne, donc le classeur publié est une adaptation redistribuée, pas une capture : il doit porter l'attribution et la licence (texte prêt à coller dans `docs/attribution-tableau.md`). Deux agrégats seulement, générés par `scripts/export_tableau.py` vers `exports/` (dossier ignoré par git). Détail dans `docs/decisions.md`.
 - Train : 89 316 commandes (backfill). Test : 38 279 commandes (flux incrémental, **sans** statut ni date de livraison : ne jamais en inventer).
 
 ## 4. GCP
@@ -47,10 +48,10 @@ Branche `main` = `origin/main`. Le travail Power BI (thème sombre, 4 pages, car
 - Piège : un **dbt global (Fusion 2.x)** existe dans `C:\Users\Nasra\.local\bin`. Active toujours le `.venv` (`.venv\Scripts\Activate.ps1`) et lance dbt **depuis le dossier `dbt/`**. L'extension VS Code est réglée sur le dbt du `.venv`.
 - Profil dev : `C:\Users\Nasra\.dbt\profiles.yml` (oauth, dataset `staging`, `location: us-central1`). Hors dépôt.
 - Macro `generate_schema_name` : les modèles `marts` vont dans `marts`, le reste dans `staging`.
-- Marts : `shared/` (`dim_client`, `dim_produit`, `dim_date`), `logistique/` (`fact_expeditions`, `fact_commandes_en_cours`), `ventes/` (`fact_commandes`, `fact_ventes_categorie`).
+- Marts : `shared/` (`dim_client`, `dim_produit`, `dim_date`), `logistique/` (`fact_expeditions`, `fact_commandes_en_cours`), `ventes/` (`fact_commandes`, `fact_ventes_categorie`, `fact_ventes_paiement`).
 - Intermédiaires : `models/intermediate/` (`int_taux_retard_vendeur`, `int_taux_retard_etat`), matérialisés en vues. Ils agrègent `fact_expeditions` pour fournir les taux de retard historiques par vendeur et par état. La macro `generate_schema_name` n'ayant pas été touchée, ils atterrissent dans le dataset `staging`.
-- Décisions clés (détail dans `docs/decisions.md`) : commande résolue = statut `delivered` **et** date de livraison non nulle ; `reference_date` fixe `2018-09-03` (variable dbt) ; calendrier 2016-01-01 à 2018-12-31 ; `dim_client` et `dim_produit` sans `load_type` ni `load_date` ; `payment_sequential` non repris ; niveau de risque des commandes en cours adossé aux taux de retard historiques (vendeur, état), avec une catégorie `indéterminé` quand aucun signal n'est exploitable, et seuils en variables dbt (`seuil_livraisons_vendeur`, `seuil_taux_retard_vendeur`, `seuil_livraisons_etat`).
-- Tests : 80 (77 réussis, **3 avertissements attendus** : 6 `delivered` sans date, 4 poids à 0, 3 paiements à 0 mensualité), 0 échec.
+- Décisions clés (détail dans `docs/decisions.md`) : commande résolue = statut `delivered` **et** date de livraison non nulle ; `reference_date` fixe `2018-09-03` (variable dbt) ; calendrier 2016-01-01 à 2018-12-31 ; `dim_client` et `dim_produit` sans `load_type` ni `load_date` ; `payment_sequential` non repris ; niveau de risque des commandes en cours adossé aux taux de retard historiques (vendeur, état), avec une catégorie `indéterminé` quand aucun signal n'est exploitable, et seuils en variables dbt (`seuil_livraisons_vendeur`, `seuil_taux_retard_vendeur`, `seuil_livraisons_etat`) ; tout taux des marts ventes se calcule sur `nb_orders_statut_connu` et jamais sur `nb_orders`, qui inclut les 38 279 commandes du flux incrémental sans statut ; les agrégats destinés à Tableau ne portent que des mesures additives, et `avg_price` est exclu de l'export pour rendre impossible la moyenne de moyennes.
+- Tests : 89 (86 réussis, **3 avertissements attendus** : 6 `delivered` sans date, 4 poids à 0, 3 paiements à 0 mensualité), 0 échec.
 
 ## 6. Airflow
 
@@ -81,12 +82,12 @@ Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers text
 
 ## 8. État git à reprendre
 
-- Tout est commité et poussé. Avant de commiter du Power BI : `git add -n Dashboards` pour contrôler. Doivent rester ignorés : `.pbi/cache.abf`, `.pbi/localSettings.json`, `*.pbix`, `airflow/.env`, `airflow/secrets/`.
+- Tout est commité et poussé. Avant de commiter du Power BI : `git add -n Dashboards` pour contrôler. Doivent rester ignorés : `.pbi/cache.abf`, `.pbi/localSettings.json`, `*.pbix`, `airflow/.env`, `airflow/secrets/`, `exports/`.
 - À ajouter plus tard : les décisions Power BI dans `docs/decisions.md` (thème sombre, filtres de volume). Le critère « vendeur à risque » et le niveau de risque des commandes en cours y sont déjà documentés.
 
 ## 9. Reste à faire
 
-1. **Phase 09, Tableau Public** (LOD, pas de DAX) : structure proposée dans `CLAUDE.md` (vue d'ensemble, catégories et produits, paiement et segmentation, statuts et annulations), alimentée par `fact_commandes`, `fact_ventes_categorie`, `dim_produit`, `dim_date`, `dim_client`. À confirmer avec moi avant de commencer. Tableau Public lit un fichier ou un extrait : attention à la licence des données (extrait agrégé, attribution).
+1. **Phase 09, classeur Tableau Public** (LOD, pas de DAX). La couche données est faite et les décisions sont prises : les 4 vues de `CLAUDE.md` (vue d'ensemble, catégories et produits, paiement et segmentation, statuts et annulations) ; deux sources **séparées et non croisables**, `exports/fact_ventes_categorie.csv` (1 026 lignes) et `exports/fact_ventes_paiement.csv` (5 428 lignes) ; attribution obligatoire sur chaque tableau de bord. **Tableau Public ne se connecte pas à BigQuery** (réservé à Tableau Desktop, payant), d'où le passage par des CSV. Reste à construire le classeur dans l'application, puis à le publier.
 2. **Phase 10** : README final (architecture, choix du flux incrémental, remplacement de DataCo), captures d'écran des dashboards avec attribution, vérification que le dépôt ne contient aucune donnée.
 3. Nettoyage de fin de projet : arrêter Airflow (`docker compose down`), supprimer la clé du compte de service, vérifier le budget GCP.
 
@@ -100,3 +101,5 @@ Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers text
 - dbt (depuis `dbt/`, `.venv` actif) : `dbt run`, `dbt test`, `dbt run --select marts`.
 - Airflow (depuis `airflow/`) : `docker compose up -d`, `docker compose down`, interface http://localhost:8080.
 - Contrôle BigQuery rapide : `bq query --use_legacy_sql=false --location=us-central1 --project_id=sonorous-lyceum-506109-a5 "<requête>"`. Sous PowerShell, les requêtes multilignes passées en argument sont tronquées : les aplatir sur une ligne.
+- Pièges `bq` rencontrés : il **ne fonctionne pas sous Git Bash** (il cherche un `python3.13` absent du PATH), donc le lancer depuis PowerShell ; et PowerShell **mange les guillemets doubles** d'une requête passée en argument, ce qui transforme une chaîne SQL en identifiant inconnu — utiliser des guillemets simples doublés (`''canceled''`) à l'intérieur de la chaîne.
+- Export Tableau (depuis la racine) : `.venv/Scripts/python.exe scripts/export_tableau.py` — régénère les deux CSV d'`exports/` après un `dbt run`.
