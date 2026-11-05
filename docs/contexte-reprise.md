@@ -1,6 +1,6 @@
 # Contexte de reprise : pipeline e-commerce brésilien
 
-> État au 04/11/2026. Fichier de passation pour une nouvelle session. À lire avec `CLAUDE.md` (règles du projet) avant toute action.
+> État au 05/11/2026. Fichier de passation pour une nouvelle session. À lire avec `CLAUDE.md` (règles du projet) avant toute action.
 > Ne contient aucun secret. La clé GCP n'est jamais dans le dépôt.
 
 ## 1. Façon de travailler avec moi
@@ -22,10 +22,10 @@
 | 04 dbt staging, 05 dbt marts, 06 Tests et qualité | Terminées, commitées et poussées |
 | 07 Orchestration Airflow | Terminée, commitée et poussée (`35b907f`). Les 24 runs ont réussi |
 | 08 Dashboard Power BI (logistique) | Terminée, commitée et poussée (`a18c327`). 4 pages, thème sombre, carte du Brésil. README : case 08 cochée |
-| 09 Dashboard Tableau (ventes) | **Couche données terminée**, commitée et poussée (`d1265e5`, `8703f77`) : 2 agrégats, 9 tests, script d'export, attribution. **Classeur Tableau à construire** |
+| 09 Dashboard Tableau (ventes) | **Classeur terminé**, commité et poussé (`1431c5e`) : 2 agrégats, 9 tests, script d'export, 6 feuilles et 4 tableaux de bord. **Restent 2 retouches de mise en page et la publication** |
 | 10 Documentation et portfolio | **À faire** |
 
-Branche `main` = `origin/main`, arbre propre. Derniers commits : `8a0812e` (niveau de risque des commandes en cours, dbt et Power BI), `ceceb7c` (format du KPI et cadrage de la carte rétablis après une réécriture par Desktop), `d1265e5` (agrégats Tableau et dénominateur des taux ventes), `8703f77` (script d'export et attribution).
+Branche `main` = `origin/main`, arbre propre. Derniers commits : `d1265e5` (agrégats Tableau et dénominateur des taux ventes), `8703f77` (script d'export et attribution), `75c259b` (contexte de reprise), `87ee10b` (classeur Tableau, sources et champs calculés), `8814181` (six feuilles et premier tableau de bord), `1431c5e` (les quatre tableaux de bord).
 
 ## 3. Données et licence
 
@@ -80,23 +80,54 @@ Projet au format **PBIP** : `Dashboards/Power BI/logistique.pbip` (fichiers text
 - Validation JSON : le schéma `visualContainer/2.14.0` n'est pas publié ; valider contre `2.13.0` en neutralisant la valeur de `$schema`.
 - Les scripts de génération utilisés (hors dépôt, dans le dossier temporaire de la session précédente) n'existent plus de façon fiable : si utile, les réécrire dans `scripts/powerbi/`.
 
-## 8. État git à reprendre
+## 8. Tableau (phase 09)
+
+Classeur `Dashboards/Tableau/ventes.twb`, au format **`.twb`** : définition seule, les CSV sont référencés par leur nom. Surtout pas `.twbx`, qui embarquerait les données. Construit dans **Tableau Desktop édition gratuite 2026.2**, et non Tableau Public.
+
+**Sources** : les deux CSV d'`exports/` en sources **distinctes**, jamais jointes ni unionnées — leurs grains diffèrent. Piège rencontré : Tableau a lu `fact_ventes_categorie.csv` en prenant `_` comme séparateur de champs (l'en-tête en compte 14 contre 8 virgules), d'où des champs `F1`, `F2`… Corrigé dans les propriétés du fichier texte, plus l'option « noms de champs dans la première ligne ». La locale du fichier est « français (France) » mais les décimaux à point sont lus correctement.
+
+**Paramètre `Année`** (liste : Toutes / 2016 / 2017 / 2018), **global au classeur**. C'est lui qui permet de piloter deux sources que rien ne relie ; un contrôle sur une seule page suffit à piloter toutes les autres.
+
+**Champs calculés** — dans chaque source : `Filtre période` (`[Année] = "Toutes" OR STR([year_number]) = [Année]`), `Panier moyen` (SUM / SUM), `Taux d'annulation` (sur `nb_orders_statut_connu`). Côté catégorie en plus : `Catégorie affichée` (libellé explicite « Catégorie inconnue »), `Mois` (`MAKEDATE(year_number, month_number, 1)`, sans parse de chaîne donc sans dépendance à la locale), `Part du total` et `Écart au panier global`.
+
+**Les deux pièges LOD**, à ne pas réapprendre :
+- `{FIXED : ...}` renvoie la même valeur sur chaque ligne ; il faut l'encadrer d'un `MAX`, sinon un `SUM` la multiplie par le nombre de lignes.
+- Un `FIXED` est évalué **avant** les filtres de dimension. Le `Filtre période` est donc passé **en contexte** sur la feuille du panier moyen. Sans cela, sélectionner une année afficherait des parts calculées sur le total des trois ans, sans aucun message d'erreur.
+
+**Feuilles** (6) : Tendance mensuelle, Ventes par catégorie, Ventes hors toys, Panier moyen par catégorie, Paiement par région, Annulations par catégorie.
+
+**Tableaux de bord** (4) : Vue d'ensemble, Catégories et produits, Paiement et segmentation, Statuts et annulations. Attribution CC BY-NC-SA sur les quatre, comme l'impose la clause de partage dans les mêmes conditions.
+
+**Seuil des annulations** : ≥ 500 commandes à statut connu, soit 16 catégories et 92 % des annulations. À 100, le classement était mené par `consoles_games` avec 4 annulations sur 156 — du bruit, pas un taux.
+
+**Constat de données** : `toys` pèse **75 % des commandes et du chiffre d'affaires** (32,8 M sur 43,6 M), vérifié jusqu'à `fact_commandes` joint à `dim_produit`. Le déséquilibre porte sur le volume et non sur le panier : 342,6 pour `toys` contre 341,4 en moyenne générale, quand `garden_tools` atteint 977. D'où la feuille « Ventes hors toys ».
+
+**Reste à faire à la souris** : sur « Paiement et segmentation » et « Statuts et annulations », le bloc d'attribution a été collé en objet flottant et chevauche le haut du graphique ; sur « Catégories et produits », il occupe trop de hauteur. Le déplacement d'un objet flottant est le seul geste que le pilotage à distance n'a pas réussi à produire.
+
+**Astuce** : le copier-coller d'un objet entre tableaux de bord (`Ctrl+C` puis `Ctrl+V`) fonctionne quand le glisser-déposer depuis le volet Objets échoue.
+
+**Incident à connaître** : un collage de texte mal ciblé sur un canevas de tableau de bord crée une **source de données presse-papiers** et corrompt l'état en mémoire (« No such datasource » au rétablissement). Récupération : fermer le classeur en refusant la sauvegarde, puis rouvrir depuis le disque. D'où la règle : enregistrer après chaque étape.
+
+**Limites de l'édition gratuite** : la page d'accueil annonce « Passez à une licence payante pour partager et publier » et indique que l'édition gratuite ne permet pas de partager ou d'exporter des ressources. **À tester avant d'aller plus loin** : menu Serveur > Tableau Public. Si c'est bloqué, installer **Tableau Public Desktop** (produit séparé et gratuit) et y rouvrir le `.twb`, qui est portable. Autre alerte : mise à jour vers 2026.2.1 exigée depuis le 31 août 2026 pour conserver l'édition gratuite, alors que la version installée est 2026.2.
+
+## 9. État git à reprendre
 
 - Tout est commité et poussé. Avant de commiter du Power BI : `git add -n Dashboards` pour contrôler. Doivent rester ignorés : `.pbi/cache.abf`, `.pbi/localSettings.json`, `*.pbix`, `airflow/.env`, `airflow/secrets/`, `exports/`.
 - À ajouter plus tard : les décisions Power BI dans `docs/decisions.md` (thème sombre, filtres de volume). Le critère « vendeur à risque » et le niveau de risque des commandes en cours y sont déjà documentés.
 
-## 9. Reste à faire
+## 10. Reste à faire
 
-1. **Phase 09, classeur Tableau Public** (LOD, pas de DAX). La couche données est faite et les décisions sont prises : les 4 vues de `CLAUDE.md` (vue d'ensemble, catégories et produits, paiement et segmentation, statuts et annulations) ; deux sources **séparées et non croisables**, `exports/fact_ventes_categorie.csv` (1 026 lignes) et `exports/fact_ventes_paiement.csv` (5 428 lignes) ; attribution obligatoire sur chaque tableau de bord. **Tableau Public ne se connecte pas à BigQuery** (réservé à Tableau Desktop, payant), d'où le passage par des CSV. Reste à construire le classeur dans l'application, puis à le publier.
+1. **Phase 09, finition** : repositionner les deux blocs d'attribution flottants (pages « Paiement et segmentation » et « Statuts et annulations »), réduire celui de « Catégories et produits », puis **tester la publication** vers Tableau Public — voir les limites de l'édition gratuite en section 8. Le sélecteur d'année sur les pages 3 et 4 est facultatif, le paramètre étant global au classeur.
 2. **Phase 10** : README final (architecture, choix du flux incrémental, remplacement de DataCo), captures d'écran des dashboards avec attribution, vérification que le dépôt ne contient aucune donnée.
 3. Nettoyage de fin de projet : arrêter Airflow (`docker compose down`), supprimer la clé du compte de service, vérifier le budget GCP.
 
-## 10. Points ouverts
+## 11. Points ouverts
 
+- **Publication Tableau** : l'édition gratuite de Tableau Desktop annonce ne pas permettre de partager ni d'exporter des ressources. À tester (menu Serveur > Tableau Public) **avant** d'investir dans la finition ; repli éventuel sur Tableau Public Desktop, le `.twb` étant portable.
 - Dégradé de couleur de la carte : à régler dans Power BI (Format > Couleurs > fx) si le rendu par défaut ne convient pas.
 - Barres par état : un filtre « N premiers » reste possible si la liste est trop longue.
 
-## 11. Commandes utiles
+## 12. Commandes utiles
 
 - dbt (depuis `dbt/`, `.venv` actif) : `dbt run`, `dbt test`, `dbt run --select marts`.
 - Airflow (depuis `airflow/`) : `docker compose up -d`, `docker compose down`, interface http://localhost:8080.
