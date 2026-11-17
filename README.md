@@ -1,6 +1,6 @@
 # Pipeline data e-commerce brésilien — GCP · dbt · Airflow
 
-> Projet de portfolio, en finition. Le pipeline est complet de l'ingestion aux dashboards ; il reste à publier le classeur Tableau et à insérer les captures d'écran.
+> Projet de portfolio terminé. Le pipeline va de l'ingestion aux dashboards, et les huit pages de restitution sont reproduites plus bas.
 
 Pipeline de données complet construit autour d'un dataset e-commerce brésilien livré en 5 tables relationnelles, avec un split train/test détourné en **flux d'ingestion réaliste** : le train sert de backfill historique, le test simule des commandes en cours, sans issue connue.
 
@@ -37,8 +37,8 @@ Le dataset brésilien lève les deux : **5 tables relationnelles** à assembler,
 - [x] 06 · Tests & qualité
 - [x] 07 · Orchestration Airflow
 - [x] 08 · Dashboard Power BI — Logistique & Livraison
-- [ ] 09 · Dashboard Tableau — Ventes & Produits *(classeur construit, publication à venir)*
-- [ ] 10 · Documentation & portfolio
+- [x] 09 · Dashboard Tableau — Ventes & Produits *(publication en ligne impossible : voir ci-dessous)*
+- [x] 10 · Documentation & portfolio
 
 Feuille de route détaillée : [`docs/feuille-de-route.html`](docs/feuille-de-route.html) (à ouvrir dans un navigateur).
 
@@ -90,7 +90,29 @@ La répartition des sévérités est délibérée. Les anomalies **connues de la
 
 Les deux outils partagent la **même charte** (`Dashboards/Power BI/theme/ecommerce-brasil.json`) : la différence porte sur le domaine métier et le langage de calcul, pas sur l'habillage.
 
+Le classeur Tableau n'est **pas publié en ligne** : l'édition gratuite de Tableau Desktop désactive les entrées « Enregistrer dans Tableau Public » du menu Serveur. Le `.twb` étant portable, il s'ouvre dans Tableau Public Desktop pour qui veut le rejouer. Les captures ci-dessous en tiennent lieu — ce qui reste cohérent avec la licence du jeu de données, qui interdit de redistribuer les données.
+
 Les deux outils ne lisent pas la même chose. Power BI se connecte directement à BigQuery ; Tableau consomme deux agrégats exportés en CSV par `scripts/export_tableau.py`, qui ne portent que des **mesures additives** — compteurs et sommes, jamais de moyenne pré-calculée — afin que les LOD recalculent correctement en `SUM / SUM`.
+
+### Les quatre pages Power BI
+
+| | |
+|---|---|
+| ![Vue d'ensemble](docs/captures/powerbi-01-vue-ensemble.png) | ![Géographie](docs/captures/powerbi-02-geographie.png) |
+| **Vue d'ensemble** — taux de retard, délai et coût de port moyens | **Géographie** — retard par état et par ville |
+| ![Vendeurs](docs/captures/powerbi-03-vendeurs.png) | ![Commandes en cours](docs/captures/powerbi-04-commandes-en-cours.png) |
+| **Vendeurs** — volume contre taux de retard, à partir de 30 livraisons | **Commandes en cours** — le flux entrant classé par niveau de risque |
+
+### Les quatre pages Tableau
+
+Chaque page porte l'attribution CC BY-NC-SA en pied, comme l'impose la clause de partage dans les mêmes conditions.
+
+| | |
+|---|---|
+| ![Vue d'ensemble](docs/captures/tableau-01-vue-ensemble.png) | ![Catégories et produits](docs/captures/tableau-02-categories-produits.png) |
+| **Vue d'ensemble** — KPI, tendance mensuelle, ventes par catégorie | **Catégories et produits** — panier moyen et écart au panier global, vue hors `toys` |
+| ![Paiement et segmentation](docs/captures/tableau-03-paiement-segmentation.png) | ![Statuts et annulations](docs/captures/tableau-04-statuts-annulations.png) |
+| **Paiement et segmentation** — modes de paiement par état | **Statuts et annulations** — taux par catégorie, au-dessus du seuil de volume |
 
 ## Ce que montrent les données
 
