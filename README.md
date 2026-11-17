@@ -86,7 +86,9 @@ La répartition des sévérités est délibérée. Les anomalies **connues de la
 
 **Power BI — Logistique & Livraison** (DAX). Quatre pages : vue d'ensemble, géographie avec carte du Brésil au niveau ville, performance par vendeur, et commandes en cours. Cette dernière classe le flux entrant par **niveau de risque**, déduit des taux de retard déjà mesurés sur l'historique — vendeur et état — plutôt que d'un pronostic : `élevé` quand les deux signaux se cumulent, `indéterminé` quand aucun n'est exploitable. Rien n'est inventé sur une commande dont on ignore l'issue.
 
-**Tableau — Ventes & Produits** (LOD, pas de DAX). Quatre pages : tendance mensuelle, catégories et panier moyen, paiement par région, annulations. Les expressions LOD ne sont employées que là où un agrégat simple ne suffit pas : la part d'une catégorie dans le total, et l'écart au panier moyen général.
+**Tableau — Ventes & Produits** (LOD, pas de DAX). Quatre pages : tendance mensuelle, catégories et panier moyen, paiement par région, annulations. Chacune porte une rangée de cartes KPI et une colonne de filtres — année, catégorie, mode de paiement, état. Les expressions LOD ne sont employées que là où un agrégat simple ne suffit pas : la part d'une catégorie dans le total, et l'écart au panier moyen général. Le filtre de catégorie est volontairement laissé hors contexte, faute de quoi le `FIXED` du panier global serait recalculé sur la sélection et l'écart tomberait à zéro.
+
+Les deux outils partagent la **même charte** (`Dashboards/Power BI/theme/ecommerce-brasil.json`) : la différence porte sur le domaine métier et le langage de calcul, pas sur l'habillage.
 
 Les deux outils ne lisent pas la même chose. Power BI se connecte directement à BigQuery ; Tableau consomme deux agrégats exportés en CSV par `scripts/export_tableau.py`, qui ne portent que des **mesures additives** — compteurs et sommes, jamais de moyenne pré-calculée — afin que les LOD recalculent correctement en `SUM / SUM`.
 
