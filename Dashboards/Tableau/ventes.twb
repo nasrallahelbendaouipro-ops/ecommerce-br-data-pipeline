@@ -213,8 +213,8 @@
         <calculation class='tableau' formula='[Calculation_1473408857407495] - MAX({ FIXED : SUM([total_price]) / SUM([nb_orders]) })' />
       </column>
       <column caption='fact_ventes_categorie.csv' datatype='table' name='[__tableau_internal_object_id__].[fact_ventes_categorie.csv_ECBDA0623B8E4583868A93D0066B6399]' role='measure' type='quantitative' />
-      <column aggregation='Sum' datatype='integer' name='[month_number]' role='dimension' type='ordinal' />
-      <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+      <column caption='Mois (numéro)' aggregation='Sum' datatype='integer' name='[month_number]' role='dimension' type='ordinal' />
+      <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
       <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;France&quot;' />
@@ -442,17 +442,17 @@
         <calculation class='tableau' formula='SUM([nb_orders_canceled]) / SUM([nb_orders_statut_connu])' />
       </column>
       <column caption='fact_ventes_paiement.csv' datatype='table' name='[__tableau_internal_object_id__].[fact_ventes_paiement.csv_B934D417C1D545C096B6A45C1605CCE3]' role='measure' type='quantitative' />
-      <column caption='Customer State' datatype='string' name='[customer_state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
-      <column caption='Month Number' datatype='integer' name='[month_number]' role='dimension' type='quantitative' />
-      <column caption='Nb Orders' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
-      <column caption='Nb Orders Canceled' datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
-      <column caption='Nb Orders Statut Connu' datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
-      <column aggregation='Sum' caption='Payment Installments' datatype='integer' name='[payment_installments]' role='dimension' type='ordinal' />
-      <column caption='Payment Type' datatype='string' name='[payment_type]' role='dimension' type='nominal' />
-      <column caption='Total Payment Value' datatype='real' name='[total_payment_value]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
-      <column caption='Total Price' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+      <column caption='État' datatype='string' name='[customer_state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='Mois (numéro)' datatype='integer' name='[month_number]' role='dimension' type='quantitative' />
+      <column caption='Commandes' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+      <column caption='Commandes annulées' datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+      <column caption='Commandes au statut connu' datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+      <column aggregation='Sum' caption='Mensualités' datatype='integer' name='[payment_installments]' role='dimension' type='ordinal' />
+      <column caption='Mode de paiement' datatype='string' name='[payment_type]' role='dimension' type='nominal' />
+      <column caption='Montant des paiements' datatype='real' name='[total_payment_value]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+      <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
       <column caption='Year Month' datatype='string' name='[year_month]' role='dimension' type='nominal' />
-      <column caption='Year Number' datatype='integer' name='[year_number]' role='dimension' type='quantitative' />
+      <column caption='Année' datatype='integer' name='[year_number]' role='dimension' type='quantitative' />
       <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;France&quot;' />
@@ -511,14 +511,14 @@
             <column caption='Taux d&apos;annulation' datatype='real' name='[Calculation_1473408857505800]' role='measure' type='quantitative' default-format='p0.00%'>
               <calculation class='tableau' formula='SUM([nb_orders_canceled]) / SUM([nb_orders_statut_connu])' />
             </column>
-            <column datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
-            <column datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Commandes annulées' datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Commandes au statut connu' datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1473408857305094]' derivation='None' name='[none:Calculation_1473408857305094:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
+            <column caption='Catégorie (source)' datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
             <column-instance column='[nb_orders_statut_connu]' derivation='Sum' name='[sum:nb_orders_statut_connu:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1473408857505800]' derivation='User' name='[usr:Calculation_1473408857505800:qk]' pivot='key' type='quantitative' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
             <groupfilter function='member' level='[none:Calculation_1473408857202693:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
@@ -564,6 +564,7 @@
         <style-rule element='axis'>
           <format attr='color' value='#B8C6DD' />
           <format attr='font-size' value='9' />
+          <format attr='title' field='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[usr:Calculation_1473408857505800:qk]' scope='cols' value='Taux d&apos;annulation' />
         </style-rule>
         <style-rule element='gridline'>
           <format attr='line-visibility' value='off' />
@@ -621,9 +622,9 @@
               <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
             </column>
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
             <column-instance column='[total_price]' derivation='Sum' name='[sum:total_price:qk]' pivot='key' type='quantitative' />
-            <column datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+            <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
             <groupfilter function='member' level='[none:Calculation_1473408857202693:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
@@ -737,14 +738,14 @@
             <column caption='Filtre période' datatype='boolean' name='[Calculation_1473408855707650]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
             </column>
-            <column caption='Customer State' datatype='string' name='[customer_state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
-            <column caption='Nb Orders' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='État' datatype='string' name='[customer_state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='Commandes' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
             <column-instance column='[Calculation_1473408855707650]' derivation='None' name='[none:Calculation_1473408855707650:nk]' pivot='key' type='nominal' />
             <column-instance column='[customer_state]' derivation='None' name='[none:customer_state:nk]' pivot='key' type='nominal' />
             <column-instance column='[payment_type]' derivation='None' name='[none:payment_type:nk]' pivot='key' type='nominal' />
-            <column caption='Payment Type' datatype='string' name='[payment_type]' role='dimension' type='nominal' />
+            <column caption='Mode de paiement' datatype='string' name='[payment_type]' role='dimension' type='nominal' />
             <column-instance column='[nb_orders]' derivation='Sum' name='[sum:nb_orders:qk]' pivot='key' type='quantitative' />
-            <column caption='Year Number' datatype='integer' name='[year_number]' role='dimension' type='quantitative' />
+            <column caption='Année' datatype='integer' name='[year_number]' role='dimension' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.0zfv7x116edgm81ffm2jn1m4gobj].[none:Calculation_1473408855707650:nk]'>
             <groupfilter function='member' level='[none:Calculation_1473408855707650:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
@@ -790,6 +791,7 @@
         <style-rule element='axis'>
           <format attr='color' value='#B8C6DD' />
           <format attr='font-size' value='9' />
+          <format attr='title' field='[federated.0zfv7x116edgm81ffm2jn1m4gobj].[sum:nb_orders:qk]' scope='cols' value='Nombre de commandes' />
         </style-rule>
         <style-rule element='gridline'>
           <format attr='line-visibility' value='off' />
@@ -846,14 +848,14 @@
             <column caption='Écart au panier global' datatype='real' name='[Calculation_1473408863215627]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0.0;-&quot;R$&quot;#,##0.0'>
               <calculation class='tableau' formula='[Calculation_1473408857407495] - MAX({ FIXED : SUM([total_price]) / SUM([nb_orders]) })' />
             </column>
-            <column datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Commandes' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
             <column-instance column='[Calculation_1473408857305094]' derivation='None' name='[none:Calculation_1473408857305094:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
-            <column datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+            <column caption='Catégorie (source)' datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
+            <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
             <column-instance column='[Calculation_1473408857407495]' derivation='User' name='[usr:Calculation_1473408857407495:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1473408863215627]' derivation='User' name='[usr:Calculation_1473408863215627:qk]' pivot='key' type='quantitative' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]' context='true'>
             <groupfilter function='member' level='[none:Calculation_1473408857202693:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
@@ -895,6 +897,7 @@
         <style-rule element='axis'>
           <format attr='color' value='#B8C6DD' />
           <format attr='font-size' value='9' />
+          <format attr='title' field='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[usr:Calculation_1473408857407495:qk]' scope='cols' value='Panier moyen (R$)' />
         </style-rule>
         <style-rule element='gridline'>
           <format attr='line-visibility' value='off' />
@@ -947,19 +950,19 @@
               <calculation class='tableau' formula='IF ISNULL([product_category_name]) OR TRIM([product_category_name]) = &quot;&quot; THEN &quot;Catégorie inconnue&quot; ELSE [product_category_name] END' />
             </column>
             <column-instance column='[Calculation_1473408857305094]' derivation='None' name='[none:Calculation_1473408857305094:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
+            <column caption='Catégorie (source)' datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
             <column caption='Filtre période' datatype='boolean' name='[Calculation_1473408857202693]' role='dimension' type='nominal'>
               <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
             </column>
             <column caption='Mois' datatype='date' name='[Calculation_1473408857972745]' role='dimension' type='ordinal'>
               <calculation class='tableau' formula='MAKEDATE([year_number], [month_number], 1)' />
             </column>
-            <column aggregation='Sum' datatype='integer' name='[month_number]' role='dimension' type='ordinal' />
+            <column caption='Mois (numéro)' aggregation='Sum' datatype='integer' name='[month_number]' role='dimension' type='ordinal' />
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
             <column-instance column='[total_price]' derivation='Sum' name='[sum:total_price:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1473408857972745]' derivation='Month-Trunc' name='[tmn:Calculation_1473408857972745:qk]' pivot='key' type='quantitative' />
-            <column datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
             <groupfilter function='member' level='[none:Calculation_1473408857202693:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
@@ -1000,6 +1003,8 @@
         <style-rule element='axis'>
           <format attr='color' value='#B8C6DD' />
           <format attr='font-size' value='9' />
+          <format attr='title' field='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[sum:total_price:qk]' scope='rows' value='Chiffre d&apos;affaires (R$)' />
+          <format attr='title' field='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[tmn:Calculation_1473408857972745:qk]' scope='cols' value='Mois' />
         </style-rule>
         <style-rule element='gridline'>
           <format attr='line-visibility' value='off' />
@@ -1046,9 +1051,9 @@
               <calculation class='tableau' formula='IF ISNULL([product_category_name]) OR TRIM([product_category_name]) = &quot;&quot; THEN &quot;Catégorie inconnue&quot; ELSE [product_category_name] END' />
             </column>
             <column-instance column='[Calculation_1473408857305094]' derivation='None' name='[none:Calculation_1473408857305094:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
+            <column caption='Catégorie (source)' datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
             <column-instance column='[total_price]' derivation='Sum' name='[sum:total_price:qk]' pivot='key' type='quantitative' />
-            <column datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+            <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857305094:nk]'>
             <groupfilter expression='ISNULL([Calculation_1473408857305094]) OR (NOT([Calculation_1473408857305094] = &apos;toys&apos;))' function='filter' user:ui-enumeration='exclusive' user:ui-pattern-include-all-when-empty='true' user:ui-pattern_text='toys' user:ui-pattern_type='exact-match'>
@@ -1088,6 +1093,7 @@
         <style-rule element='axis'>
           <format attr='color' value='#B8C6DD' />
           <format attr='font-size' value='9' />
+          <format attr='title' field='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[sum:total_price:qk]' scope='cols' value='Chiffre d&apos;affaires (R$)' />
         </style-rule>
         <style-rule element='gridline'>
           <format attr='line-visibility' value='off' />
@@ -1133,9 +1139,9 @@
               <calculation class='tableau' formula='IF ISNULL([product_category_name]) OR TRIM([product_category_name]) = &quot;&quot; THEN &quot;Catégorie inconnue&quot; ELSE [product_category_name] END' />
             </column>
             <column-instance column='[Calculation_1473408857305094]' derivation='None' name='[none:Calculation_1473408857305094:nk]' pivot='key' type='nominal' />
-            <column datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
+            <column caption='Catégorie (source)' datatype='string' name='[product_category_name]' role='dimension' type='nominal' />
             <column-instance column='[total_price]' derivation='Sum' name='[sum:total_price:qk]' pivot='key' type='quantitative' />
-            <column datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+            <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857305094:nk]'>
             <groupfilter function='level-members' level='[none:Calculation_1473408857305094:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
@@ -1173,6 +1179,7 @@
         <style-rule element='axis'>
           <format attr='color' value='#B8C6DD' />
           <format attr='font-size' value='9' />
+          <format attr='title' field='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[sum:total_price:qk]' scope='cols' value='Chiffre d&apos;affaires (R$)' />
         </style-rule>
         <style-rule element='gridline'>
           <format attr='line-visibility' value='off' />
@@ -1232,9 +1239,9 @@
               <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
             </column>
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
             <column-instance column='[nb_orders]' derivation='Sum' name='[sum:nb_orders:qk]' pivot='key' type='quantitative' />
-            <column datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Commandes' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
             <groupfilter function='member' level='[none:Calculation_1473408857202693:nk]' member='true' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
@@ -1356,12 +1363,12 @@
               <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
             </column>
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
             <column caption='Panier moyen' datatype='real' name='[Calculation_1473408857407495]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0.0;-&quot;R$&quot;#,##0.0'>
               <calculation class='tableau' formula='SUM([total_price]) / SUM([nb_orders])' />
             </column>
-            <column datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
-            <column datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
+            <column caption='Commandes' datatype='integer' name='[nb_orders]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Chiffre d&apos;affaires' datatype='real' name='[total_price]' role='measure' type='quantitative' default-format='c&quot;R$&quot;#,##0;-&quot;R$&quot;#,##0' />
             <column-instance column='[Calculation_1473408857407495]' derivation='User' name='[usr:Calculation_1473408857407495:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
@@ -1484,12 +1491,12 @@
               <calculation class='tableau' formula='[Parameters].[Paramètre 1473408854364161] = &quot;Toutes&quot; OR STR([year_number]) = [Parameters].[Paramètre 1473408854364161]' />
             </column>
             <column-instance column='[Calculation_1473408857202693]' derivation='None' name='[none:Calculation_1473408857202693:nk]' pivot='key' type='nominal' />
-            <column aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
+            <column caption='Année' aggregation='Sum' datatype='integer' name='[year_number]' role='dimension' type='ordinal' />
             <column caption='Taux d&apos;annulation' datatype='real' name='[Calculation_1473408857505800]' role='measure' type='quantitative' default-format='p0.00%'>
               <calculation class='tableau' formula='SUM([nb_orders_canceled]) / SUM([nb_orders_statut_connu])' />
             </column>
-            <column datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
-            <column datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Commandes annulées' datatype='integer' name='[nb_orders_canceled]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
+            <column caption='Commandes au statut connu' datatype='integer' name='[nb_orders_statut_connu]' role='measure' type='quantitative' default-format='n#,##0;-#,##0' />
             <column-instance column='[Calculation_1473408857505800]' derivation='User' name='[usr:Calculation_1473408857505800:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.031hxyk128uqvt1cfaucy0l2p0hk].[none:Calculation_1473408857202693:nk]'>
